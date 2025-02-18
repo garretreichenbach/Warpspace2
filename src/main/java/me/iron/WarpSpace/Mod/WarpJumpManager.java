@@ -175,7 +175,7 @@ public class WarpJumpManager {
 	}
 
 	public static void doSectorSwitch(SimpleTransformableSendableObject ship, Vector3i newPos, boolean instant) {
-		GameServer.executeAdminCommand("change_sector_for_uid " + ship.getUniqueIdentifierFull() + " " + newPos.x + " " + newPos.y + " " + newPos.z); //CHANGE_SECTOR_FOR_UID
+		GameServer.executeAdminCommand("change_sector_for_uid " + ship.getUniqueIdentifier() + " " + newPos.x + " " + newPos.y + " " + newPos.z); //CHANGE_SECTOR_FOR_UID
 		WarpProcess.setProcess(ship, WarpProcess.HAS_JUMPED, 1);
 //        SectorSwitch sectorSwitch = GameServer.getServerState().getController().queueSectorSwitch(ship,newPos,SectorSwitch.TRANS_JUMP,false,true,true);
 //        if (sectorSwitch != null) {

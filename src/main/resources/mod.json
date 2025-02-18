@@ -2,12 +2,12 @@
   "name": "WarpSpace 2",
   "author": "TheDerpGamer, IR0NSIGHT (Original)",
   "description": "An alternative FTL system for a new age.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "starmade_version": "0.203.164",
   "client_mod": false,
   "server_mod": false,
   "main_class": "me.iron.WarpSpace.Mod.WarpMain",
-  "smd_resource_id": 8166,
+  "smd_resource_id": 8669,
   "dependencies": [
     -1
   ],

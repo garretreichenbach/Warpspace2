@@ -1,26 +1,28 @@
 # Warpspace
-# Starmade mod that completly overhauls fasttravel
+## StarMade mod that completely overhauls fast travel
+
+Todo: Update this
 
 This mod explores the idea to have a space in which you travel to get from point a to point b, but faster than normal flight.
-The mod creates a warpspace, similar to the minecraft nether in concept. Every meter travelled in the warp translates into 10 meters travelled in realspace.
+The mod creates a WarpSpace, similar to the minecraft nether in concept. Every meter travelled in the warp translates into 10 meters travelled in real space.
 So instead of teleporting from a to b (vanilla FTL), you change into the warp, fly the distance which is 10 times shorter, and drop back out of warp.
 Some core effects are:
 - no more instant travel, longer distances take longer time.
-- a shared space where you can meet other travellers, be attacked or attack others (actual the likelyhood is increased by factor 1000 since 1 warpsector represents 10x10x10 realspace sectors.)
-- you can now follow warping players, as the warp behaves similar to realspace in its flight dynamics.
-- warp entry points are created (this is a sideeffect of the downscaling by factor 10). since all ships entering warp in a 10x10x10 sector cube end up in the same warpsector,
-all ships exiting the warp end up in the same realspace sector. This creates warpnodes, or travel routes where each starsystem has 4 nodes. Any ship entering the starsystem  through warp will end up at one of them.
+- a shared space where you can meet other travellers, be attacked or attack others (actual the likelihood is increased by factor 1000 since 1 warp sector represents 10x10x10 real space sectors.)
+- you can now follow warping players, as the warp behaves similar to real space in its flight dynamics.
+- warp entry points are created (this is a side effect of the downscaling by factor 10). since all ships entering warp in a 10x10x10 sector cube end up in the same warp sector,
+all ships exiting the warp end up in the same real space sector. This creates warp nodes, or travel routes where each star system has 4 nodes. Any ship entering the star system  through warp will end up at one of them.
 These nodes could be defended or used for trade, taxing, piracy etc.
 
 
 # Ingame behaviour/How to use
 - the mod will notice any FTL jump a ship performs. instead of arriving at your location, you will enter the warp.
-- Your navmarker will be changed to its warp position as well. Just follow the marker to get to the correct position in warp.
+- Your nav marker will be changed to its warp position as well. Just follow the marker to get to the correct position in warp.
 - to drop out of warp you can either use your FTL drive again, or slow down to below 50m/s.
 - FTL usage will drop you out of warp instantly, slowing down will give you a 10 second countdown and show you a warning.
-- if you spawn a spacestation in warp, it will drop out to a random sector! thats wanted behaviour to prohibit warpcamping.
+- if you spawn a space station in warp, it will drop out to a random sector! thats wanted behaviour to prohibit warpcamping.
 - astronauts will not drop out of warp automatically.
-- if you want to avoid the warp completely, you can create Warpgates. they keep their vanilla behaviour and offer a way to travel instantly, precisely and safely.
+- if you want to avoid the warp completely, you can create Warp gates. they keep their vanilla behaviour and offer a way to travel instantly, precisely and safely.
 
 ### Beacons:
 https://github.com/IR0NSIGHT/Warpspace/blob/master/src/me/iron/WarpSpace/Mod/beacon/beaconHelp.md
@@ -55,7 +57,7 @@ Starloader community discord for bugreports/feedback/help:
 https://discord.gg/hcpSphM
 
 # Install guide
-- use the builtin, ingame modbrowser, find WarpSpace and click "install".
+- use the builtin, in-game mod browser, find WarpSpace and click "install".
 - make sure the mod is activated.
 
 If you have the suspicion that something is not working or the mod is not running at all, contact me or the starloader discord.

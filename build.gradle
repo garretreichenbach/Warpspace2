@@ -1,48 +1,57 @@
-import groovy.json.JsonSlurper
-
 plugins {
-    id "java"
-    id "application"
+    id 'java'
+    id 'application'
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+def starmadeDirectory = project.property("starmade_root")
+def modName = project.property("mod_name")
+group = project.property('mod_org_id')
+version = project.property('mod_version')
+def mainClassName = group + modName
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation files("${starmade_directory}/StarMade.jar")
-    implementation fileTree(dir: starmade_directory + "/lib", include: ["*.jar"])
-    implementation fileTree(dir: "lib", include: ["*.jar"])
+    implementation(files(starmadeDirectory + "StarMade.jar"))
+    implementation(fileTree(dir: (starmadeDirectory + "lib"), include: "*.jar"))
+    implementation(fileTree(dir: 'lib', include: '*.jar'))
 }
 
-compileJava.options.encoding = "UTF-8"
+compileJava.options.encoding = 'UTF-8'
 
-tasks.register("update_json") {
+// TODO(mixin-migration): delete once org.schema.* overwrites are replaced with mixins.
+// The SoundManager overwrite is stale vs. current vanilla and not imported by any mod code.
+sourceSets.main.java.exclude 'org/schema/schine/sound/pcode/SoundManager.java'
+
+tasks.register("updateVersion") {
     doLast {
-        def modJson = file("src/main/resources/mod.json")
+        def modJson = file('src/main/resources/mod.json')
         def modJsonContent = modJson.getText()
-        modJsonContent = modJsonContent.replaceAll(/"version":\s*".*"/, "\"version\": \"" + mod_version + "\"")
-        modJsonContent = modJsonContent.replaceAll(/"description":\s*".*"/, "\"description\": \"" + mod_description + "\"")
-        modJsonContent = modJsonContent.replaceAll(/"starmade_version":\s*".*"/, "\"starmade_version\": \"" + starmade_version + "\"")
-        modJsonContent = modJsonContent.replaceAll(/"smd_resource_id":\s*".*"/, "\"smd_resource_id\": \"" + mod_id + "\"")
-        modJsonContent = modJsonContent.replaceAll(/"main_class":\s*".*"/, "\"main_class\": \"" + main_class + "\"")
+        modJsonContent = modJsonContent.replaceAll(/"version":\s*".*"/, "\"version\": \"" + version + "\"")
         modJson.write(modJsonContent)
     }
 }
 
 jar {
-    dependsOn("update_json")
+    dependsOn("updateVersion")
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-    destinationDirectory.set(file(starmade_directory + "mods"))
-    archiveFileName = mod_name + " - " + mod_version +  ".jar"
-    manifest.attributes("Main-Class": main_class)
+    destinationDirectory.set(file(starmadeDirectory + "mods"))
+    archiveFileName = modName + 'v' + getVersion() + '.jar'
+    manifest.attributes('Main-Class': mainClassName)
     from {
         configurations.runtimeClasspath.collect {
-            if(!it.getPath().contains("StarMade") && it.getName().endsWith(".jar")) it.isDirectory() ? it : zipTree(it)
-            else return null;
+            if(!it.getPath().contains("StarMade") && it.getName().endsWith(".jar")) {
+                it.isDirectory() ? it : zipTree(it)
+            } else {
+                return null
+            }
         }
     }
 }

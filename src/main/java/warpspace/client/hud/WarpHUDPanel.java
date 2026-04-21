@@ -1,4 +1,4 @@
-package warpspace.client;
+package warpspace.client.hud;
 
 import api.common.GameClient;
 import api.listener.events.gui.HudCreateEvent;

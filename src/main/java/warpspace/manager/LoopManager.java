@@ -1,8 +1,8 @@
 package warpspace.manager;
 
 import warpspace.Interdiction.ExtraEventLoop;
-import warpspace.client.HUD_core;
 import warpspace.client.WarpProcess;
+import warpspace.client.hud.HUDCore;
 import warpspace.server.WarpCheckLoop;
 
 /**
@@ -22,6 +22,6 @@ public final class LoopManager {
 
     public static void startClientLoops() {
         WarpProcess.initUpdateLoop();
-        HUD_core.HUDLoop();
+        HUDCore.HUDLoop();
     }
 }

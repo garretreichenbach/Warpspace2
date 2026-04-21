@@ -1,4 +1,4 @@
-package warpspace.client;
+package warpspace.client.hud;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.UnicodeFont;
@@ -14,7 +14,7 @@ import org.schema.schine.input.InputState;
  */
 public class TextElement extends GUITextOverlay {
 	public String text = "";
-	public HUD_element parent;
+	public HUDElement parent;
 	public TextElement(UnicodeFont unicodeFont, InputState inputState) {
 		super(50, 30, unicodeFont, Color.green, inputState);
 	}

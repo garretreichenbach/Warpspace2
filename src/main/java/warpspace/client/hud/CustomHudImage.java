@@ -1,4 +1,4 @@
-package warpspace.client;
+package warpspace.client.hud;
 /**
  * partly stolen from StarAPI (i think)
  */
@@ -13,7 +13,7 @@ import warpspace.WarpManager;
 import javax.vecmath.Vector3f;
 
 /**
- * this class draws an image onto screen. it is a worker class for HUD_element. dont use it without HUD_element.
+ * this class draws an image onto screen. it is a worker class for HUDElement. dont use it without HUDElement.
  */
 class CustomHudImage extends org.schema.schine.graphicsengine.forms.gui.GUIElement {
 	public Sprite sprite;
@@ -28,9 +28,9 @@ class CustomHudImage extends org.schema.schine.graphicsengine.forms.gui.GUIEleme
 	/**
 	 * the HUD element (basically image wrapper) for which this HUDImage was created
 	 */
-	private HUD_element el;
+	private HUDElement el;
 
-	public CustomHudImage(InputState inputState, HUD_element el) {
+	public CustomHudImage(InputState inputState, HUDElement el) {
 		super(inputState);
 		this.position = el.getPxPos(); //all HUD images of same type share the same position, scale and movestep.
 		this.scale = el.getPxScale();
@@ -61,7 +61,7 @@ class CustomHudImage extends org.schema.schine.graphicsengine.forms.gui.GUIEleme
 			return;
 		}
 
-		if(HUD_core.drawList.get(el.enumValue) == 1) { //draw
+		if(HUDCore.drawList.get(el.enumValue) == 1) { //draw
 			sprite.setPositionCenter(true);
 			if(el.playShutter) {
 				ShaderLibrary.scanlineShader.load();

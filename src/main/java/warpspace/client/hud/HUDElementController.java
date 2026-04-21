@@ -1,4 +1,4 @@
-package warpspace.client;
+package warpspace.client.hud;
 
 /**
  * STARMADE MOD
@@ -17,7 +17,7 @@ public class HUDElementController {
 		if(clean) {
 			//clean elements of same type
 			//TODO write good find method
-			for(HUD_element el : HUD_core.elementList) {
+			for(HUDElement el : HUDCore.elementList) {
 				if(el.enumValue == null) {
 					continue;
 				}
@@ -26,7 +26,7 @@ public class HUDElementController {
 				}
 			}
 		}
-		HUD_core.drawList.put(element, 1);
+		HUDCore.drawList.put(element, 1);
 	}
 
 	/**
@@ -35,13 +35,13 @@ public class HUDElementController {
 	 * @param type  Elementtype
 	 * @param value value 0,1
 	 */
-	public static void drawType(HUD_element.ElementType type, int value) {
-		for(HUD_element el : HUD_core.elementList) {
+	public static void drawType(HUDElement.ElementType type, int value) {
+		for(HUDElement el : HUDCore.elementList) {
 			if(el.type == null) {
 				continue;
 			}
 			if(el.type.equals(type)) {
-				HUD_core.drawList.put(el.enumValue, value);
+				HUDCore.drawList.put(el.enumValue, value);
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public class HUDElementController {
 	 *
 	 * @param type ElementType to clear.
 	 */
-	public static void clearType(HUD_element.ElementType type) {
+	public static void clearType(HUDElement.ElementType type) {
 		drawType(type, 0);
 	}
 }

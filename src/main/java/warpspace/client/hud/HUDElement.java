@@ -1,4 +1,4 @@
-package warpspace.client;
+package warpspace.client.hud;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
  * TIME: 15:14
  * This is the element which serves as a container for an image (sprite) and a text element. it defines position, size etc.
  */
-class HUD_element {
+class HUDElement {
 	public SpriteList enumValue;
 	public CustomHudImage image;
 	public boolean playShutter = false;
@@ -21,7 +21,7 @@ class HUD_element {
 	private Vector3f pxPos; //position in px
 	private Vector3f pxScale; //scale on current screen.
 	private Vector3f moveStep; //used for moving the image, synched vector
-	private HUD_element mother = null; //parent object which this element is attached to: uses its position and scale.
+	private HUDElement mother = null; //parent object which this element is attached to: uses its position and scale.
 	private TextElement textElement = null;
 	private Vector3f textElementOffset = new Vector3f(0, 0, 0); //in percent of screen
 	//TODO refactor into easier inheritance class -> mother updates scale and pos, class only defines offset.
@@ -31,7 +31,7 @@ class HUD_element {
 	/**
 	 * attached children that get scaled and moved with the original.
 	 */
-	private List<HUD_element> children = new ArrayList<HUD_element>();
+	private List<HUDElement> children = new ArrayList<HUDElement>();
 
 	/**
 	 * creates a HUD element
@@ -43,7 +43,7 @@ class HUD_element {
 	 * @param type      x
 	 */
 	//TODO is this still needed?
-	public HUD_element(Vector3f pos, Vector3f scale, Vector3f moveStep, SpriteList enumValue, ElementType type) {
+	public HUDElement(Vector3f pos, Vector3f scale, Vector3f moveStep, SpriteList enumValue, ElementType type) {
 		this.enumValue = enumValue;
 		this.type = type;
 		this.pos = pos;
@@ -58,7 +58,7 @@ class HUD_element {
 	 * @param image     image to use (from spritelist)
 	 * @param type      up, down, background, etc, used for collectivley drawing or disabling.
 	 */
-	public HUD_element(HUD_element reference, SpriteList image, ElementType type) {
+	public HUDElement(HUDElement reference, SpriteList image, ElementType type) {
 		this.enumValue = image;
 		this.type = type;
 		this.pos = reference.getPos();
@@ -72,7 +72,7 @@ class HUD_element {
 
 	@Override
 	public String toString() {
-		return "HUD_element{" +
+		return "HUDElement{" +
 				"pos=" + pos +
 				", scale=" + scale +
 				", pxPos=" + pxPos +
@@ -113,7 +113,7 @@ class HUD_element {
 	public void setPos(Vector3f pos) {
 		this.pos.set(pos);
 		this.setPxPos(ScreenHelper.relPosToPixelPos(pos));
-		for(HUD_element child : children) {
+		for(HUDElement child : children) {
 			child.setPos(pos);
 		}
 		//change Text element pos
@@ -139,7 +139,7 @@ class HUD_element {
 	public void setScale(Vector3f scale) {
 		this.scale.set(scale);
 		this.setPxScale(ScreenHelper.relPosToPixelPos(scale, true));
-		for(HUD_element child : children) {
+		for(HUDElement child : children) {
 			child.setScale(scale);
 		}
 	}
@@ -201,7 +201,7 @@ class HUD_element {
 	 *
 	 * @return list of attached children
 	 */
-	public List<HUD_element> getChildren() {
+	public List<HUDElement> getChildren() {
 		return children;
 	}
 
@@ -210,7 +210,7 @@ class HUD_element {
 	 *
 	 * @param child HUD element child to be attached
 	 */
-	public void addChild(HUD_element child) {
+	public void addChild(HUDElement child) {
 		this.children.add(child);
 	}
 

@@ -4,8 +4,8 @@ import api.network.Packet;
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
 import org.schema.game.common.data.player.PlayerState;
-import warpspace.client.HUD_core;
 import warpspace.client.WarpProcess;
+import warpspace.client.hud.HUDCore;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public class PacketHUDUpdate extends Packet {
 	public void processPacketOnClient() {
 		//set players process "map" (enum)
 		WarpProcess.update(arr);
-		HUD_core.UpdateHUD();
+		HUDCore.UpdateHUD();
 	}
 
 	@Override

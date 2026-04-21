@@ -11,8 +11,8 @@ import org.schema.schine.resource.ResourceLoader;
 import warpspace.beacon.BeaconManager;
 import warpspace.beacon.WarpBeaconAddon;
 import warpspace.client.DebugUI;
-import warpspace.client.HUD_core;
-import warpspace.client.SpriteList;
+import warpspace.client.hud.HUDCore;
+import warpspace.client.hud.SpriteList;
 import warpspace.client.map.DropPointMapDrawer;
 import warpspace.client.map.WarpSpaceMap;
 import warpspace.client.rendering.WarpSkybox;
@@ -80,7 +80,7 @@ public class WarpMain extends StarMod {
 		super.onClientCreated(event);
 
 		SpriteList.init();
-		HUD_core.initList();
+		HUDCore.initList();
 
 		EventManager.registerClient();
 		LoopManager.startClientLoops();
@@ -106,7 +106,7 @@ public class WarpMain extends StarMod {
 	public void onBlockConfigLoad(BlockConfig blockConfig) {
 		super.onBlockConfigLoad(blockConfig);
 		WarpBeaconAddon.registerChamberBlock();
-		WSElementInfoManager.onBlockConfigLoad(instance, blockConfig);
+		WSElementInfoManager.onBlockConfigLoad();
 	}
 
 	@Override

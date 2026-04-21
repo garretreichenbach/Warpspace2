@@ -4,7 +4,7 @@ import api.listener.Listener;
 import api.listener.events.gui.HudCreateEvent;
 import api.mod.StarLoader;
 import warpspace.WarpMain;
-import warpspace.client.HUD_core;
+import warpspace.client.hud.HUDCore;
 
 /**
  * Registers all warpspace HUD elements on the client when the HUD is
@@ -19,7 +19,7 @@ public final class HUDDrawListener {
 		StarLoader.registerListener(HudCreateEvent.class, new Listener<HudCreateEvent>() {
 			@Override
 			public void onEvent(HudCreateEvent hudCreateEvent) {
-				HUD_core.onHUDCreated(hudCreateEvent);
+                HUDCore.onHUDCreated(hudCreateEvent);
 			}
 		}, WarpMain.getInstance());
 	}

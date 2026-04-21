@@ -1,4 +1,4 @@
-package warpspace.client;
+package warpspace.client.hud;
 /**
  * provided by Jake
  * thanks jake!

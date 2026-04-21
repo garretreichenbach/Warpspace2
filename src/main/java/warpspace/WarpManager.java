@@ -1,6 +1,5 @@
 package warpspace;
 
-import api.DebugFile;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.Galaxy;
@@ -34,11 +33,11 @@ public class WarpManager {
 	 */
 	public static boolean isInWarp(SimpleTransformableSendableObject<?> object) {
 		if(object == null) {
-			DebugFile.err("isInWarp called with null object");
+			WarpMain.getInstance().logWarning("isInWarp called with null object");
 			return false;
 		}
 		if(object.getSector(new Vector3i()) == null) {
-			DebugFile.err("isInWarp object has no sector:" + object.getName());
+			WarpMain.getInstance().logWarning("isInWarp object has no sector: " + object.getName());
 			return false;
 		}
 		return isInWarp(object.getSector(new Vector3i()));

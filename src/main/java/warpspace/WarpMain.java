@@ -14,13 +14,13 @@ import warpspace.client.DebugUI;
 import warpspace.client.HUD_core;
 import warpspace.client.SpriteList;
 import warpspace.client.map.DropPointMapDrawer;
+import warpspace.client.map.WarpSpaceMap;
+import warpspace.client.rendering.WarpSkybox;
 import warpspace.client.sounds.SoundQueueManager;
 import warpspace.manager.ConfigManager;
 import warpspace.manager.EventManager;
 import warpspace.manager.LoopManager;
 import warpspace.manager.PacketManager;
-import warpspace.taswin.WarpSpaceMap;
-import warpspace.visuals.WarpSkybox;
 
 /**
  * Entry point for the WarpSpace mod. Each lifecycle hook delegates to the
@@ -34,7 +34,6 @@ public class WarpMain extends StarMod {
 	public BeaconManager beaconManagerServer;
 	public BeaconManager beaconManagerClient;
 	public DropPointMapDrawer dropPointMapDrawer;
-	public WarpThrusterListener warpThrusterListener;
 
 	public static WarpMain getInstance() {
 		return instance;
@@ -57,7 +56,7 @@ public class WarpMain extends StarMod {
 
 		dropPointMapDrawer = new DropPointMapDrawer(this);
 
-		EventManager.registerCommon(this);
+		EventManager.registerCommon();
 	}
 
 	@Override

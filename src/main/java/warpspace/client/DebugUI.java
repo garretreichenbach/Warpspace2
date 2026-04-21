@@ -1,25 +1,22 @@
 package warpspace.client;
 
 
-import java.util.Collection;
-
-import javax.annotation.Nullable;
-
+import api.mod.StarMod;
+import api.utils.game.PlayerUtils;
+import api.utils.game.chat.CommandInterface;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.data.player.PlayerState;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.network.objects.Sendable;
-
-import api.DebugFile;
-import api.mod.StarMod;
-import api.utils.game.PlayerUtils;
-import api.utils.game.chat.CommandInterface;
 import warpspace.WarpJumpManager;
 import warpspace.WarpMain;
 import warpspace.WarpManager;
 import warpspace.beacon.BeaconObject;
 import warpspace.client.sounds.SoundQueueManager;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
 
 
 /**
@@ -36,14 +33,14 @@ public class DebugUI implements CommandInterface {
 
     public static Integer[] parseText(String text, String keyword, String separator) {
         if (!text.contains(keyword)) {
-            DebugFile.err("text does not contain keyword.");
+            WarpMain.getInstance().logWarning("parseText: text does not contain keyword '" + keyword + "'");
             return null;
         }
 
         String s = text;
-        s = s.replace(keyword,""); //remove keyword
-        s = s.replace(" ",""); //remove space
-        DebugFile.err("pasreText: after removing keyword " + keyword + ", string is: " + s);
+        s = s.replace(keyword, ""); //remove keyword
+        s = s.replace(" ", ""); //remove space
+        WarpMain.getInstance().logInfo("parseText: after removing keyword '" + keyword + "', string is: " + s);
         String[] parts = s.split(separator);
         Integer[] arr = new Integer[parts.length];
         for (int i = 0; i < arr.length; i++) {

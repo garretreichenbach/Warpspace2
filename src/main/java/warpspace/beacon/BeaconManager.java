@@ -1,11 +1,5 @@
 package warpspace.beacon;
 
-import java.util.*;
-
-import org.schema.common.util.linAlg.Vector3i;
-import org.schema.game.server.data.GameServerState;
-
-import api.DebugFile;
 import api.listener.Listener;
 import api.listener.events.entity.SegmentControllerFullyLoadedEvent;
 import api.listener.events.player.PlayerSpawnEvent;
@@ -15,9 +9,13 @@ import api.mod.config.PersistentObjectUtil;
 import api.mod.config.SimpleSerializerWrapper;
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
+import org.schema.common.util.linAlg.Vector3i;
+import org.schema.game.server.data.GameServerState;
 import warpspace.TimedRunnable;
 import warpspace.WarpMain;
 import warpspace.WarpManager;
+
+import java.util.*;
 
 /**
  * STARMADE MOD
@@ -39,7 +37,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
             }
             return manager;
         } catch (Exception ex) {
-            DebugFile.err("BEACONMANAGER FAILED TO LOAD FOR WARPSPACE");
+	        WarpMain.getInstance().logException("BeaconManager failed to load for warpspace", ex);
             throw ex;
         }
     }
@@ -286,8 +284,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
                 }
             }
         } catch (Exception e) {
-            DebugFile.err("BEACONMANAGER BUFFER READ ERROR");
-            e.printStackTrace();
+	        WarpMain.getInstance().logException("BeaconManager buffer read error", e);
         }
     }
 
@@ -306,8 +303,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
             }
 
         } catch (Exception e) {
-            DebugFile.err("BEACONMANAGER BUFFER WRITE ERROR");
-            e.printStackTrace();
+	        WarpMain.getInstance().logException("BeaconManager buffer write error", e);
         }
 
     }

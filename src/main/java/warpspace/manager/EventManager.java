@@ -1,20 +1,17 @@
 package warpspace.manager;
 
-import warpspace.WarpMain;
-import warpspace.WarpThrusterListener;
 import warpspace.beacon.WarpBeaconAddon;
-import warpspace.client.GUIeventhandler;
-import warpspace.server.WarpJumpListener;
+import warpspace.listener.HUDDrawListener;
+import warpspace.listener.WarpJumpListener;
+import warpspace.listener.WarpThrusterListener;
 
 /**
  * Central registry for all event listeners used by the mod.
  * Listener registration is split by lifecycle phase so each hook in
- * {@link WarpMain} delegates to a single entry point here.
+ * {@link warpspace.WarpMain} delegates to a single entry point here.
  *
- * <p>Many listeners are currently implemented as self-registering static
- * methods scattered across subpackages. This manager is the single index
- * that points to all of them; future phases will inline the listener
- * bodies here.
+ * <p>Some listeners are still owned by their subsystems (beacon, map, HUD
+ * loop) and will be inlined here when those subsystems are restructured.
  */
 public final class EventManager {
 
@@ -24,22 +21,22 @@ public final class EventManager {
     /**
      * Listeners shared between client and server, registered on mod enable.
      */
-    public static void registerCommon(WarpMain mod) {
+    public static void registerCommon() {
         WarpBeaconAddon.registerAddonAddEventListener();
-        mod.warpThrusterListener = new WarpThrusterListener(mod);
+        WarpThrusterListener.register();
     }
 
     /**
      * Listeners that require the server to be initialized.
      */
     public static void registerServer() {
-        WarpJumpListener.createListener();
+        WarpJumpListener.register();
     }
 
     /**
      * Listeners that require the client to be initialized.
      */
     public static void registerClient() {
-        GUIeventhandler.addHUDDrawListener();
+        HUDDrawListener.register();
     }
 }

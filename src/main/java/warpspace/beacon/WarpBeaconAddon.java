@@ -1,5 +1,12 @@
 package warpspace.beacon;
 
+import api.config.BlockConfig;
+import api.listener.Listener;
+import api.listener.events.register.RegisterAddonsEvent;
+import api.mod.StarLoader;
+import api.mod.StarMod;
+import api.utils.addon.SimpleAddOn;
+import api.utils.game.SegmentControllerUtils;
 import org.schema.game.common.controller.ManagedUsableSegmentController;
 import org.schema.game.common.controller.PlayerUsableInterface;
 import org.schema.game.common.controller.SegmentController;
@@ -9,14 +16,6 @@ import org.schema.game.common.data.element.ElementInformation;
 import org.schema.game.common.data.element.ElementKeyMap;
 import org.schema.schine.common.language.Lng;
 import org.schema.schine.network.server.ServerMessage;
-
-import api.config.BlockConfig;
-import api.listener.Listener;
-import api.listener.events.register.RegisterAddonsEvent;
-import api.mod.StarLoader;
-import api.mod.StarMod;
-import api.utils.addon.SimpleAddOn;
-import api.utils.game.SegmentControllerUtils;
 import warpspace.WarpMain;
 import warpspace.manager.ConfigManager;
 
@@ -27,157 +26,154 @@ import warpspace.manager.ConfigManager;
  * TIME: 19:31
  */
 public class WarpBeaconAddon extends SimpleAddOn {
-    private  float powerCost = 10000;
-    public static final String UIDName = "WARP_BEACON_SIMPLE";
-    public static ElementInformation beaconChamber;
-    public static void registerChamberBlock() {
-        //short rootID = (short) ElementKeyMap.getInfo().chamberRoot;
-         StarMod mod = WarpMain.instance;
-         short rootID = ElementKeyMap.REACTOR_CHAMBER_JUMP;
-        beaconChamber = BlockConfig.newChamber(mod, "Warp Beacon", rootID); //the chamber is the beacon, the addon is the toggle (button)
-        beaconChamber.chamberCapacity = (float) ConfigManager.getWarpBeaconChamberPercent();
-        beaconChamber.setTextureId(ElementKeyMap.getInfo(rootID).getTextureIds());
-        beaconChamber.setDescription("Shift the closest warp droppoint to this sector.");
-        beaconChamber.chamberPermission = ElementInformation.CHAMBER_PERMISSION_STATION;
-        BlockConfig.add(beaconChamber);
+	public static final String UIDName = "WARP_BEACON_SIMPLE";
+	public static ElementInformation beaconChamber;
+	public static long addonID;
+	private final float powerCost = 10000;
+	private BeaconObject beacon;
+	private boolean wasActive; //on deactivation
 
-    }
-    public static long addonID;
-    public static void registerAddonAddEventListener() {
-        StarLoader.registerListener(RegisterAddonsEvent.class, new Listener<RegisterAddonsEvent>() {
-            @Override
-            public void onEvent(RegisterAddonsEvent event) {
-                event.addModule(new WarpBeaconAddon(event.getContainer(),WarpMain.instance));
-            }
-        }, WarpMain.instance);
-    }
-    public static WarpBeaconAddon getAddon(SegmentController s) {
-        if (!(s instanceof ManagedUsableSegmentController))
-            return null;
-        ManagedUsableSegmentController msc = (ManagedUsableSegmentController)s;
-        PlayerUsableInterface pui = SegmentControllerUtils.getAddon(msc,WarpBeaconAddon.addonID);
-        if (pui == null || !(pui instanceof WarpBeaconAddon))
-            return null;
-        return (WarpBeaconAddon)pui;
-    }
+	public WarpBeaconAddon(ManagerContainer<?> managerContainer, StarMod starMod) {
+		super(managerContainer, ElementKeyMap.REACTOR_CHAMBER_JUMP, starMod, UIDName);
+		addonID = usableId;
+	}
 
-    private BeaconObject beacon;
-    public WarpBeaconAddon(ManagerContainer<?> managerContainer, StarMod starMod) {
-        super(managerContainer, ElementKeyMap.REACTOR_CHAMBER_JUMP, starMod, UIDName);
-        addonID = this.usableId;
-    }
+	public static void registerChamberBlock() {
+		//short rootID = (short) ElementKeyMap.getInfo().chamberRoot;
+		StarMod mod = WarpMain.instance;
+		short rootID = ElementKeyMap.REACTOR_CHAMBER_JUMP;
+		beaconChamber = BlockConfig.newChamber(mod, "Warp Beacon", rootID); //the chamber is the beacon, the addon is the toggle (button)
+		beaconChamber.chamberCapacity = (float) ConfigManager.getWarpBeaconChamberPercent();
+		beaconChamber.setTextureId(ElementKeyMap.getInfo(rootID).getTextureIds());
+		beaconChamber.setDescription("Shift the closest warp droppoint to this sector.");
+		beaconChamber.chamberPermission = ElementInformation.CHAMBER_PERMISSION_STATION;
+		BlockConfig.add(beaconChamber);
 
-    @Override
-    public boolean isPlayerUsable() { //called every frame (or often)
-        SegmentController sc = getSegmentController();
-        if (!(sc instanceof ManagedUsableSegmentController<?>))
-            return false;
-        ReactorElement warpBeaconChamber = SegmentControllerUtils.getChamberFromElement((ManagedUsableSegmentController<?> )sc, beaconChamber);
-        if (warpBeaconChamber == null)
-            return false;
-        return super.isPlayerUsable();
-    }
+	}
 
-    @Override //time in seconds required to fully charge
-    public float getChargeRateFull() { //in seconds
-        return 3;
-    }
+	public static void registerAddonAddEventListener() {
+		StarLoader.registerListener(RegisterAddonsEvent.class, new Listener<>() {
+			@Override
+			public void onEvent(RegisterAddonsEvent event) {
+				event.addModule(new WarpBeaconAddon(event.getContainer(), WarpMain.instance));
+			}
+		}, WarpMain.instance);
+	}
 
-    @Override
-    public double getPowerConsumedPerSecondResting() {
-        return 0;
-    }
+	public static WarpBeaconAddon getAddon(SegmentController s) {
+		if(!(s instanceof ManagedUsableSegmentController<?> msc)) return null;
+		PlayerUsableInterface pui = SegmentControllerUtils.getAddon(msc, addonID);
+		if(!(pui instanceof WarpBeaconAddon)) return null;
+		return (WarpBeaconAddon) pui;
+	}
 
-    @Override
-    public double getPowerConsumedPerSecondCharging() {
-        return 0;
-    }
+	@Override
+	public boolean isPlayerUsable() { //called every frame (or often)
+		SegmentController sc = getSegmentController();
+		if(!(sc instanceof ManagedUsableSegmentController<?>)) return false;
+		ReactorElement warpBeaconChamber = SegmentControllerUtils.getChamberFromElement((ManagedUsableSegmentController<?>) sc, beaconChamber);
+		if(warpBeaconChamber == null) return false;
+		return super.isPlayerUsable();
+	}
 
-    @Override
-    public float getDuration() {
-        return 1;
-    }
+	@Override //time in seconds required to fully charge
+	public float getChargeRateFull() { //in seconds
+		return 3;
+	}
 
-    @Override
-    public boolean isAutoChargeOn() {
-        return super.isAutoChargeOn();
-    }
+	@Override
+	public double getPowerConsumedPerSecondResting() {
+		return 0;
+	}
 
-    @Override
-    protected boolean isDeactivatableManually() {
-        return false;
-    }
+	@Override
+	public double getPowerConsumedPerSecondCharging() {
+		return 0;
+	}
 
-    @Override
-    public boolean onExecuteServer() {
-        if (!wasActive) {
-            onActivation();
-        }
-        wasActive = true;
-        return true;
-    }
+	@Override
+	public float getDuration() {
+		return 1;
+	}
 
-    @Override
-    public boolean onExecuteClient() {
-        return true;
-    }
+	@Override
+	public boolean isAutoChargeOn() {
+		return super.isAutoChargeOn();
+	}
 
+	@Override
+	protected boolean isDeactivatableManually() {
+		return false;
+	}
 
-    @Override
-    public void onActive() {
-        wasActive = true;
-    }
+	@Override
+	public boolean onExecuteServer() {
+		if(!wasActive) {
+			onActivation();
+		}
+		wasActive = true;
+		return true;
+	}
 
-    private boolean wasActive; //on deactivation
-    @Override
-    public void onInactive() { //called when?
-        if (wasActive) {
-            onDeactivation();
-        }
-        wasActive = false;
-    }
+	@Override
+	public boolean onExecuteClient() {
+		return true;
+	}
 
-    /**
-     * called once when addon goes inactive.
-     */
-    private void onDeactivation() {
-    }
+	@Override
+	public void onActive() {
+		wasActive = true;
+	}
 
-    /**
-     * called once when addon is activated
-     */
-    private void onActivation() {
-        if (isOnServer()) {
-            //get/make beacon
-            beacon = WarpMain.instance.beaconManagerServer.getBeaconByUID(getSegmentController().getUniqueIdentifier());
-            if (beacon == null) {
-                beacon = new BeaconObject(this.segmentController);
-                WarpMain.instance.beaconManagerServer.addBeacon(beacon);
-            }
+	@Override
+	public void onInactive() { //called when?
+		if(wasActive) {
+			onDeactivation();
+		}
+		wasActive = false;
+	}
 
-            //toggle beacon
-            boolean on = beacon.isActive();
-            beacon.setActive(!on);
-            getSegmentController().sendControllingPlayersServerMessage(Lng.astr("Beacon is now "+(beacon.isActive()?"active":"inactive")), ServerMessage.MESSAGE_TYPE_INFO);
-        }
-    }
+	/**
+	 * called once when addon goes inactive.
+	 */
+	private void onDeactivation() {
+	}
 
-    @Override
-    public String getName() {
-        return "Warp Beacon Toggle";
-    }
+	/**
+	 * called once when addon is activated
+	 */
+	private void onActivation() {
+		if(isOnServer()) {
+			//get/make beacon
+			beacon = WarpMain.instance.beaconManagerServer.getBeaconByUID(getSegmentController().getUniqueIdentifier());
+			if(beacon == null) {
+				beacon = new BeaconObject(segmentController);
+				WarpMain.instance.beaconManagerServer.addBeacon(beacon);
+			}
 
-    @Override
-    public void setCharge(float v) {
-        super.setCharge(v);
-    }
+			//toggle beacon
+			boolean on = beacon.isActive();
+			beacon.setActive(!on);
+			getSegmentController().sendControllingPlayersServerMessage(Lng.astr("Beacon is now " + (beacon.isActive() ? "active" : "inactive")), ServerMessage.MESSAGE_TYPE_INFO);
+		}
+	}
 
-    @Override
-    public void setCharges(int i) {
-        super.setCharges(i);
-    }
+	@Override
+	public String getName() {
+		return "Warp Beacon Toggle";
+	}
 
-    private void deactivate() {
-        this.activation = null;
-    }
+	@Override
+	public void setCharge(float v) {
+		super.setCharge(v);
+	}
+
+	@Override
+	public void setCharges(int i) {
+		super.setCharges(i);
+	}
+
+	private void deactivate() {
+		activation = null;
+	}
 }

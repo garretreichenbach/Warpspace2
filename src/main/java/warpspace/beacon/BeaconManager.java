@@ -11,7 +11,7 @@ import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.server.data.GameServerState;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.core.WarpManager;
 import warpspace.util.TimedRunnable;
 
@@ -31,7 +31,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
             }
             return manager;
         } catch (Exception ex) {
-	        WarpMain.getInstance().logException("BeaconManager failed to load for warpspace", ex);
+	        WarpSpace.getInstance().logException("BeaconManager failed to load for warpspace", ex);
             throw ex;
         }
     }
@@ -65,7 +65,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
                 public void onEvent(PlayerSpawnEvent event) {
                     synchAll(); //!this will fire on respawn too, dont put single use things in here!
                 }
-            },WarpMain.instance);
+            }, WarpSpace.instance);
 
 	        // Validate beacons when their station reloads. The reactor-side chamber activation
 	        // isn't re-driven on load — WarpBeaconAddon.onActivation toggles rather than sets,
@@ -80,15 +80,15 @@ public class BeaconManager extends SimpleSerializerWrapper {
 	                }
                     updateBeacon(b);
                 }
-            }, WarpMain.instance);
+            }, WarpSpace.instance);
 
-            new TimedRunnable(5000, WarpMain.instance, -1) {
+            new TimedRunnable(5000, WarpSpace.instance, -1) {
                 @Override
                 public void onRun() {
                     try {
                         updateAllBeacons();
                     } catch (Exception e) {
-	                    WarpMain.getInstance().logException("updateAllBeacons failed", e);
+	                    WarpSpace.getInstance().logException("updateAllBeacons failed", e);
                     }
                 }
             };
@@ -233,7 +233,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
     }
 
     public void synchAll() {
-	    if(!WarpMain.getInstance().getBeaconManagerServer().equals(this))
+	    if(!WarpSpace.getInstance().getBeaconManagerServer().equals(this))
             return;
 
         new BeaconUpdatePacket().sendToAll();
@@ -270,7 +270,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
                         removeBeacon(b);
                     }
                 }
-	            WarpMain.getInstance().getDropPointMapDrawer().flagForUpdate();
+	            WarpSpace.getInstance().getDropPointMapDrawer().flagForUpdate();
             }
             else {
                 //serverside => loading from persistence
@@ -281,7 +281,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
                 }
             }
         } catch (Exception e) {
-	        WarpMain.getInstance().logException("BeaconManager buffer read error", e);
+	        WarpSpace.getInstance().logException("BeaconManager buffer read error", e);
         }
     }
 
@@ -300,7 +300,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
             }
 
         } catch (Exception e) {
-	        WarpMain.getInstance().logException("BeaconManager buffer write error", e);
+	        WarpSpace.getInstance().logException("BeaconManager buffer write error", e);
         }
 
     }

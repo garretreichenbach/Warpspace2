@@ -9,7 +9,7 @@ import org.schema.game.common.data.player.PlayerState;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.network.objects.Sendable;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.beacon.BeaconObject;
 import warpspace.client.sounds.SoundQueueManager;
 import warpspace.core.WarpJumpManager;
@@ -26,14 +26,14 @@ public class DebugUI implements CommandInterface {
 
     public static Integer[] parseText(String text, String keyword, String separator) {
         if (!text.contains(keyword)) {
-            WarpMain.getInstance().logWarning("parseText: text does not contain keyword '" + keyword + "'");
+            WarpSpace.getInstance().logWarning("parseText: text does not contain keyword '" + keyword + "'");
             return null;
         }
 
         String s = text;
         s = s.replace(keyword, ""); //remove keyword
         s = s.replace(" ", ""); //remove space
-        WarpMain.getInstance().logInfo("parseText: after removing keyword '" + keyword + "', string is: " + s);
+        WarpSpace.getInstance().logInfo("parseText: after removing keyword '" + keyword + "', string is: " + s);
         String[] parts = s.split(separator);
         Integer[] arr = new Integer[parts.length];
         for (int i = 0; i < arr.length; i++) {
@@ -75,7 +75,7 @@ public class DebugUI implements CommandInterface {
         //print active pullings
             if (strings[1].equalsIgnoreCase("pulls")) {
                 StringBuilder b = new StringBuilder("All sectors with active beacons:\n");
-	            Collection<Vector3i> ss = WarpMain.getInstance().getBeaconManagerServer().getBeaconSectors();
+	            Collection<Vector3i> ss = WarpSpace.getInstance().getBeaconManagerServer().getBeaconSectors();
                 for (Vector3i s: ss) {
                     b.append("Sector ").append(WarpManager.getRealSpacePos(s)).append("-->").append(WarpJumpManager.getDropPoint(s));
                     b.append("\n");
@@ -85,20 +85,20 @@ public class DebugUI implements CommandInterface {
             }
         //print manager
             if (strings[1].equalsIgnoreCase("manager")) {
-	            echo(WarpMain.getInstance().getBeaconManagerServer().print(), playerState);
+	            echo(WarpSpace.getInstance().getBeaconManagerServer().print(), playerState);
                 return true;
             }
 
         //clear all beacons.
             if (strings[1].equalsIgnoreCase("clear")) {
-	            WarpMain.getInstance().getBeaconManagerServer().clearBeacons();
+	            WarpSpace.getInstance().getBeaconManagerServer().clearBeacons();
                 echo("cleared beacons",playerState);
                 return true;
             }
 
         //invert state for all beacons
             if (strings[1].equalsIgnoreCase("toggle")) {
-	            for(BeaconObject b : WarpMain.getInstance().getBeaconManagerServer().getBeacons()) {
+	            for(BeaconObject b : WarpSpace.getInstance().getBeaconManagerServer().getBeacons()) {
                     b.setActive(!b.isActive());
                 }
                 echo("inverted all beacon states",playerState);

@@ -7,7 +7,7 @@ import org.schema.game.client.data.GameClientState;
 import org.schema.schine.graphicsengine.forms.Sprite;
 import org.schema.schine.graphicsengine.shader.ShaderLibrary;
 import org.schema.schine.input.InputState;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.core.WarpManager;
 
 import javax.vecmath.Vector3f;
@@ -56,7 +56,7 @@ class CustomHudImage extends org.schema.schine.graphicsengine.forms.gui.GUIEleme
 			if(el.enumValue.getSprite() != null) {
 				this.sprite = el.enumValue.getSprite(); //this should automatically add the sprite once it was added through the graphics thread : autoupdated reference. element -> spriteenum
 			} else {
-				WarpMain.getInstance().logWarning("Sprite " + el.enumValue.name + " has no valid path to image");
+				WarpSpace.getInstance().logWarning("Sprite " + el.enumValue.name + " has no valid path to image");
 			}
 			return;
 		}

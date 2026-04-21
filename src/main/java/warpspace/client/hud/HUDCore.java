@@ -12,7 +12,7 @@ import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.graphicsengine.forms.font.FontLibrary;
 import org.schema.schine.graphicsengine.forms.gui.GUITextOverlay;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.client.WarpProcess;
 import warpspace.core.WarpJumpManager;
 import warpspace.core.WarpManager;
@@ -123,12 +123,12 @@ public class HUDCore {
 					tenthSeconds = 0;
 				}
 			}
-		}.runTimer(WarpMain.instance, 1);
+		}.runTimer(WarpSpace.instance, 1);
 
 		StarLoader.registerListener(HudCreateEvent.class, new Listener<HudCreateEvent>() {
 			@Override
 			public void onEvent(HudCreateEvent hudCreateEvent) {
-				new TimedRunnable(500, WarpMain.instance, -1) {
+				new TimedRunnable(500, WarpSpace.instance, -1) {
 					@Override
 					public void onRun() {
 						updateVanillaHUD();
@@ -136,7 +136,7 @@ public class HUDCore {
 				};
 				initRadarSectorGUI();
 			}
-		}, WarpMain.instance);
+		}, WarpSpace.instance);
 
 
 	}

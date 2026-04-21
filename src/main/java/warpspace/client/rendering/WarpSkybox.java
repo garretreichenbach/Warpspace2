@@ -25,7 +25,7 @@ import org.schema.schine.graphicsengine.forms.Mesh;
 import org.schema.schine.graphicsengine.shader.Shader;
 import org.schema.schine.graphicsengine.shader.Shaderable;
 import org.schema.schine.resource.MeshLoader;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.client.WarpProcess;
 import warpspace.manager.ConfigManager;
 
@@ -38,7 +38,7 @@ import static api.common.GameClient.getClientPlayerState;
 import static api.mod.StarLoader.registerListener;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.schema.schine.graphicsengine.core.Controller.getCamera;
-import static warpspace.WarpMain.instance;
+import static warpspace.WarpSpace.instance;
 
 /**
  * Draws a large inside-out sphere with a special shader while in warpspace.
@@ -76,7 +76,7 @@ public class WarpSkybox extends ModWorldDrawer implements Shaderable {
 		}, instance);
 	}
 
-	public static void loadResources(MeshLoader mloader, WarpMain mod) {
+	public static void loadResources(MeshLoader mloader, WarpSpace mod) {
 		try {
 			mloader.loadModMesh(mod, "planet_sphere", mod.getJarResource(resourcePath + "planet_sphere.zip"), null);
 			mod.logInfo("Successfully loaded sphere model");
@@ -108,7 +108,7 @@ public class WarpSkybox extends ModWorldDrawer implements Shaderable {
 					}
 				} //TODO: This is cursed. Is there really not any better way to get the segmentcontroller a player is attached to?
 				catch(Exception ex) {
-					WarpMain.getInstance().logException("Failed to resolve player's attached segment controller", ex);
+					WarpSpace.getInstance().logException("Failed to resolve player's attached segment controller", ex);
 				}
 			}
 			return null;
@@ -123,10 +123,10 @@ public class WarpSkybox extends ModWorldDrawer implements Shaderable {
 			field.setAccessible(false);
 			return rtn;
 		} catch(IllegalAccessException e) {
-			WarpMain.getInstance().logException("Could not access target field \"" + targetInstance.getClass().getName() + "." + fieldName + "\"", e);
+			WarpSpace.getInstance().logException("Could not access target field \"" + targetInstance.getClass().getName() + "." + fieldName + "\"", e);
 			return null;
 		} catch(NoSuchFieldException e) {
-			WarpMain.getInstance().logException("Field \"" + targetInstance.getClass().getName() + "." + fieldName + "\" does not exist on target or its superclasses", e);
+			WarpSpace.getInstance().logException("Field \"" + targetInstance.getClass().getName() + "." + fieldName + "\" does not exist on target or its superclasses", e);
 			return null;
 		}
 	}
@@ -149,7 +149,7 @@ public class WarpSkybox extends ModWorldDrawer implements Shaderable {
 		} else if(GameClientState.instance != null) {
 			vessel = currentlyOnBoardEntity();
 			//smoothly transition to desired warpdepth
-			float trueDepth = ConfigManager.isSpeedDropKillswitchOn()
+			float trueDepth = ConfigManager.isSpeedDropKillSwitchOn()
 					? 1
 					: WarpProcess.WARP_STABILITY.getCurrentValue() / 100f;
 

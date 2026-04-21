@@ -1,6 +1,6 @@
 package warpspace.client.hud;
 
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 
 import javax.vecmath.Vector3f;
 import java.awt.*;
@@ -58,7 +58,7 @@ public final class ScreenHelper {
 	public static Vector3f getCurrentScreenResolution() {
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		if(gd == null) {
-			WarpMain.getInstance().logWarning("graphics device is null");
+			WarpSpace.getInstance().logWarning("graphics device is null");
 			return null;
 		}
 		return new Vector3f(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight(), 0);

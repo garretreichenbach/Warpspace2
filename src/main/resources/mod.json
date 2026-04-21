@@ -1,16 +1,19 @@
 {
-  "name": "WarpSpace 2",
-  "author": "TheDerpGamer, IR0NSIGHT (Original)",
-  "description": "An alternative FTL system for a new age.",
-  "version": "1.0.1",
-  "starmade_version": "0.203.164",
-  "client_mod": false,
-  "server_mod": false,
-  "main_class": "me.iron.WarpSpace.Mod.WarpMain",
-  "smd_resource_id": 8669,
-  "dependencies": [
-    -1
-  ],
-  "core_mod": true,
-  "requires_class_resize": true
+	"name": "WarpSpace 2",
+	"author": "TheDerpGamer, IR0NSIGHT (Original mod)",
+	"description": "An alternative FTL system for a new age.",
+	"version": "2.1.0",
+	"starmade_version": "0.303.0",
+	"client_mod": false,
+	"server_mod": false,
+	"main_class": "warpspace.WarpSpace",
+	"smd_resource_id": 8669,
+	"dependencies": [
+		-1
+	],
+	"core_mod": false,
+	"requires_class_resize": false,
+	"mixin_configs": [
+		"warpspace.mixins.json"
+	]
 }

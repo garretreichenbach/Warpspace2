@@ -16,19 +16,20 @@ def mainClassName = group + modName
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spongepowered.org/maven' }
 }
 
 dependencies {
     implementation(files(starmadeDirectory + "StarMade.jar"))
     implementation(fileTree(dir: (starmadeDirectory + "lib"), include: "*.jar"))
     implementation(fileTree(dir: 'lib', include: '*.jar'))
+
+    // SpongePowered Mixin. StarLoader provides it at runtime, so compileOnly is sufficient.
+    compileOnly 'org.spongepowered:mixin:0.8.7'
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }
 
 compileJava.options.encoding = 'UTF-8'
-
-// TODO(mixin-migration): delete once org.schema.* overwrites are replaced with mixins.
-// The SoundManager overwrite is stale vs. current vanilla and not imported by any mod code.
-sourceSets.main.java.exclude 'org/schema/schine/sound/pcode/SoundManager.java'
 
 tasks.register("updateVersion") {
     doLast {

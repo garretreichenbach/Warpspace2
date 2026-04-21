@@ -1,5 +1,6 @@
 package warpspace.manager;
 
+import warpspace.WarpSpace;
 import warpspace.beacon.WarpBeaconAddon;
 import warpspace.listener.HUDDrawListener;
 import warpspace.listener.WarpJumpListener;
@@ -8,7 +9,7 @@ import warpspace.listener.WarpThrusterListener;
 /**
  * Central registry for all event listeners used by the mod.
  * Listener registration is split by lifecycle phase so each hook in
- * {@link warpspace.WarpMain} delegates to a single entry point here.
+ * {@link WarpSpace} delegates to a single entry point here.
  *
  * <p>Some listeners are still owned by their subsystems (beacon, map, HUD
  * loop) and will be inlined here when those subsystems are restructured.

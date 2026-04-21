@@ -3,7 +3,7 @@ package warpspace.listener;
 import api.listener.Listener;
 import api.listener.events.gui.HudCreateEvent;
 import api.mod.StarLoader;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.client.hud.HUDCore;
 
 /**
@@ -21,6 +21,6 @@ public final class HUDDrawListener {
 			public void onEvent(HudCreateEvent hudCreateEvent) {
                 HUDCore.onHUDCreated(hudCreateEvent);
 			}
-		}, WarpMain.getInstance());
+		}, WarpSpace.getInstance());
 	}
 }

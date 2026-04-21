@@ -5,7 +5,7 @@ import org.schema.game.common.data.player.AbstractCharacter;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.network.objects.Sendable;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.core.WarpEntityManager;
 import warpspace.manager.ConfigManager;
 import warpspace.util.TimedRunnable;
@@ -19,18 +19,18 @@ public class WarpCheckLoop {
 	 */
 	public static void loop() {
 		//killswitch active? dont run loop.
-		if(ConfigManager.isSpeedDropKillswitchOn()) {
+		if(ConfigManager.isSpeedDropKillSwitchOn()) {
 			return;
 		}
 		//make a timed loop
-		new TimedRunnable(5000, WarpMain.instance, -1) {
+		new TimedRunnable(5000, WarpSpace.instance, -1) {
 			@Override
 			public void onRun() {
 				//check for every updatable object (astronauts, hsips, asteroids etc
 				for(Sendable sc : GameServerState.instance.getLocalAndRemoteObjectContainer().getLocalUpdatableObjects().values()) {
 					if(sc instanceof SimpleTransformableSendableObject<?> obj) {
 						//buggy feature with killswitch. disables astronauts autodropping
-						if(ConfigManager.isAstronautDropKillswitchOn() && sc instanceof AbstractCharacter) {
+						if(ConfigManager.isAstronautDropKillSwitchOn() && sc instanceof AbstractCharacter) {
 							continue;
 						}
 

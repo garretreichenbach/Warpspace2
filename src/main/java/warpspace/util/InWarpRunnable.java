@@ -3,7 +3,7 @@ package warpspace.util;
 import org.schema.game.common.controller.Ship;
 import org.schema.game.common.data.player.AbstractCharacter;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.client.WarpProcess;
 import warpspace.core.WarpEntityManager;
 import warpspace.core.WarpJumpManager;
@@ -16,13 +16,13 @@ public class InWarpRunnable extends TimedRunnable {
 	private float countdown_millis = countdownMax();
 
 	public InWarpRunnable(SimpleTransformableSendableObject<?> entity) {
-		super(1000, WarpMain.instance, -1);
+		super(1000, WarpSpace.instance, -1);
 		entityId = entity.getId();
 		this.entity = entity;
 	}
 
 	private static int countdownMax() {
-		return (int) (ConfigManager.getSecondsUntilSpeeddrop() * 1000);
+		return (int) (ConfigManager.getSecondsUntilSpeedDrop() * 1000);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class InWarpRunnable extends TimedRunnable {
 		}
 		if(countdown_millis <= 0) {
 			//drop entity out of warp.
-			WarpMain.getInstance().logInfo("dropping entity " + entity.getUniqueIdentifier() + " type " + entity.getClass().getName() + " CAUSE: SPEED_DROP");
+			WarpSpace.getInstance().logInfo("dropping entity " + entity.getUniqueIdentifier() + " type " + entity.getClass().getName() + " CAUSE: SPEED_DROP");
 			WarpJumpManager.invokeDrop(0, entity, false, false);
 		}
 	}

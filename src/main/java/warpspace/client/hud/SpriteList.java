@@ -7,7 +7,7 @@ package warpspace.client.hud;
 
 import api.utils.textures.StarLoaderTexture;
 import org.schema.schine.graphicsengine.forms.Sprite;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -57,14 +57,14 @@ class SpriteLoader implements Runnable {
 				value.name = name;
 				try {
 					String path = "resources/image/" + name + ".png"; //console.png
-					InputStream is = WarpMain.instance.getJarResource(path);
+					InputStream is = WarpSpace.instance.getJarResource(path);
 					if(is == null) {
 						continue;
 					}
 					BufferedImage bi = ImageIO.read(is);
-					value.sprite = StarLoaderTexture.newSprite(bi, WarpMain.instance, "warpmain_" + name);
+					value.sprite = StarLoaderTexture.newSprite(bi, WarpSpace.instance, "warpmain_" + name);
 				} catch(IOException e) {
-					WarpMain.getInstance().logException("Failed to load HUD sprite", e);
+					WarpSpace.getInstance().logException("Failed to load HUD sprite", e);
 				}
 			}
 		}

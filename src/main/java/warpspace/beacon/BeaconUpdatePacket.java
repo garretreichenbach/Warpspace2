@@ -6,14 +6,14 @@ import api.network.PacketWriteBuffer;
 import api.network.packets.PacketUtil;
 import org.schema.game.common.data.player.PlayerState;
 import org.schema.game.server.data.GameServerState;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 
 import java.io.IOException;
 
 public class BeaconUpdatePacket extends Packet {
     @Override
     public void readPacketData(PacketReadBuffer packetReadBuffer) throws IOException {
-	    BeaconManager client = WarpMain.getInstance().getBeaconManagerClient();
+	    BeaconManager client = WarpSpace.getInstance().getBeaconManagerClient();
         if (client == null)
             return;
         client.onDeserialize(packetReadBuffer);
@@ -21,7 +21,7 @@ public class BeaconUpdatePacket extends Packet {
 
     @Override
     public void writePacketData(PacketWriteBuffer packetWriteBuffer) throws IOException {
-	    WarpMain.getInstance().getBeaconManagerServer().onSerialize(packetWriteBuffer);
+	    WarpSpace.getInstance().getBeaconManagerServer().onSerialize(packetWriteBuffer);
     }
 
     @Override

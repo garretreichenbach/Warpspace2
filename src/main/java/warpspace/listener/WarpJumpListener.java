@@ -3,7 +3,7 @@ package warpspace.listener;
 import api.listener.Listener;
 import api.listener.events.entity.ShipJumpEngageEvent;
 import api.mod.StarLoader;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.core.WarpJumpManager;
 
 /**
@@ -22,6 +22,6 @@ public final class WarpJumpListener {
 				event.setCanceled(true);
 				WarpJumpManager.invokeJumpdriveUsed(event.getController(), false);
 			}
-		}, WarpMain.getInstance());
+		}, WarpSpace.getInstance());
 	}
 }

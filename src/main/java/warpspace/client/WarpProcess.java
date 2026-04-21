@@ -8,7 +8,7 @@ import org.schema.game.client.data.PlayerControllable;
 import org.schema.game.common.data.player.PlayerState;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.core.WarpJumpManager;
 import warpspace.core.WarpManager;
 import warpspace.network.PacketHUDUpdate;
@@ -100,7 +100,7 @@ public enum WarpProcess {
                 }
             }
         };
-        updater.runTimer(WarpMain.instance,1);
+        updater.runTimer(WarpSpace.instance,1);
     }
 
     /**

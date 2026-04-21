@@ -5,7 +5,7 @@ import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.schine.common.language.Lng;
 import org.schema.schine.network.server.ServerMessage;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 
 /**
  * mod-owned event
@@ -33,7 +33,7 @@ public class WarpJumpEvent extends Event {
 		this.start = start;
 		this.end = end;
 		this.type = type;
-		WarpMain.getInstance().logInfo("warpspace performed jump for " + ship.getName() + " start: " + start + " end " + end + " of type " + type);
+		WarpSpace.getInstance().logInfo("warpspace performed jump for " + ship.getName() + " start: " + start + " end " + end + " of type " + type);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package warpspace.client.sounds;
 
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.client.WarpProcess;
 import warpspace.client.WarpProcessListener;
 import warpspace.manager.ConfigManager;
@@ -19,8 +19,8 @@ public class JumpdriveSounds extends WarpProcessListener {
             case JUMPEXIT: //fallthrough
             case JUMPENTRY:
                 if (!c.wasTrue() && c.isTrue()) {
-                    int delay = (int) (ConfigManager.getSecondsWarpjumpDelay() * 1000 - 9300);
-                    new TimedRunnable(delay, WarpMain.instance, 1){
+                    int delay = (int) (ConfigManager.getSecondsWarpJumpDelay() * 1000 - 9300);
+                    new TimedRunnable(delay, WarpSpace.instance, 1){
                         @Override
                         public void onRun() {
                             queue(SoundQueueManager.SoundEntry.drive_charge_up);
@@ -37,7 +37,7 @@ public class JumpdriveSounds extends WarpProcessListener {
             return;
         }
         SoundQueueManager.instance.queueSound(
-                new SoundQueueManager.SoundInstance(e, (float) ConfigManager.getSfxEffectsAddDb(), 1),
+                new SoundQueueManager.SoundInstance(e, 0f, 1),
 		        QUEUE_ID);
     }
 }

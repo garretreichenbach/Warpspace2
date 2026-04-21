@@ -13,7 +13,7 @@ import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.common.language.Lng;
 import org.schema.schine.network.server.ServerMessage;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.beacon.BeaconManager;
 import warpspace.client.WarpProcess;
 import warpspace.manager.ConfigManager;
@@ -33,14 +33,14 @@ public class WarpJumpManager {
 	public static HashSet<SimpleTransformableSendableObject> entryQueue = new HashSet<>();
 
 	public static void invokeJumpdriveUsed(SimpleTransformableSendableObject object, boolean forceJump) {
-		WarpMain.getInstance().logInfo("entity used its jumpdrive: " + object.getUniqueIdentifier() + " type " + object.getClass().getName());
+		WarpSpace.getInstance().logInfo("entity used its jumpdrive: " + object.getUniqueIdentifier() + " type " + object.getClass().getName());
 		if(!forceJump && (object instanceof Ship && !canExecuteWarpdrive((Ship) object)))
 			return;
 		//check if ship is in warp or not, check if ship is allowed to perform the jump
 		if(WarpManager.isInWarp(object) && WarpJumpManager.isAllowedDropJump(object)) { //is in warpspace, get realspace pos
-			WarpJumpManager.invokeDrop((long) (1000 * ConfigManager.getSecondsWarpjumpDelay()), object, true, forceJump);
+			WarpJumpManager.invokeDrop((long) (1000 * ConfigManager.getSecondsWarpJumpDelay()), object, true, forceJump);
 		} else if(!WarpManager.isInWarp(object) && WarpJumpManager.isAllowedEntry(object)) { //is in realspace, get warppos
-			WarpJumpManager.invokeEntry((long) (1000 * ConfigManager.getSecondsWarpjumpDelay()), object, forceJump);
+			WarpJumpManager.invokeEntry((long) (1000 * ConfigManager.getSecondsWarpJumpDelay()), object, forceJump);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class WarpJumpManager {
 
 		dropQueue.add(ship);
 		//invoke sectorswitch
-		new TimedRunnable((int) countdown, WarpMain.instance, 1) {
+		new TimedRunnable((int) countdown, WarpSpace.instance, 1) {
 			private void afterRun() {
 				WarpProcess.setProcess(ship, WarpProcess.JUMPEXIT, 0);
 				WarpProcess.setProcess(ship, WarpProcess.JUMPDROP, 0);
@@ -134,7 +134,7 @@ public class WarpJumpManager {
 
 		//set entry process to true/happening
 		WarpProcess.setProcess(ship, WarpProcess.JUMPENTRY, 1);
-		new TimedRunnable((int) countdown, WarpMain.instance, 1) {
+		new TimedRunnable((int) countdown, WarpSpace.instance, 1) {
 			private void afterRun() {
 				WarpProcess.setProcess(ship, WarpProcess.JUMPENTRY, 0);
 			}
@@ -237,7 +237,7 @@ public class WarpJumpManager {
 	 * @return
 	 */
 	public static boolean isDroppointShifted(Vector3i warpSector) {
-		BeaconManager bm = (WarpMain.getInstance().getBeaconManagerServer() != null) ? WarpMain.getInstance().getBeaconManagerServer() : WarpMain.getInstance().getBeaconManagerClient();
+		BeaconManager bm = (WarpSpace.getInstance().getBeaconManagerServer() != null) ? WarpSpace.getInstance().getBeaconManagerServer() : WarpSpace.getInstance().getBeaconManagerClient();
 		return bm.hasActiveBeacon(warpSector);
 	}
 
@@ -269,7 +269,7 @@ public class WarpJumpManager {
 		try {
 			sector = GameServer.getUniverse().getSector(position);
 		} catch(IOException e) {
-			WarpMain.getInstance().logException("Failed to fetch sector at " + position + " for interdiction check", e);
+			WarpSpace.getInstance().logException("Failed to fetch sector at " + position + " for interdiction check", e);
 			return false;
 		}
 		if(sector == null) {
@@ -335,7 +335,7 @@ public class WarpJumpManager {
 		warpSector = new Vector3i(warpSector);
 		//apply warp-beacon. inform player if beacon had effect.
 		Vector3i drop = WarpManager.getRealSpacePos(warpSector);
-		BeaconManager bm = (WarpMain.getInstance().getBeaconManagerServer() != null) ? WarpMain.getInstance().getBeaconManagerServer() : WarpMain.getInstance().getBeaconManagerClient();
+		BeaconManager bm = (WarpSpace.getInstance().getBeaconManagerServer() != null) ? WarpSpace.getInstance().getBeaconManagerServer() : WarpSpace.getInstance().getBeaconManagerClient();
 		bm.updateStrongest(warpSector);
 		bm.modifyDroppoint(warpSector, drop);
 		return drop;

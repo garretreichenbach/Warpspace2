@@ -16,7 +16,7 @@ import org.schema.game.common.data.element.ElementInformation;
 import org.schema.game.common.data.element.ElementKeyMap;
 import org.schema.schine.common.language.Lng;
 import org.schema.schine.network.server.ServerMessage;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.manager.ConfigManager;
 
 public class WarpBeaconAddon extends SimpleAddOn {
@@ -34,7 +34,7 @@ public class WarpBeaconAddon extends SimpleAddOn {
 
 	public static void registerChamberBlock() {
 		//short rootID = (short) ElementKeyMap.getInfo().chamberRoot;
-		StarMod mod = WarpMain.instance;
+		StarMod mod = WarpSpace.instance;
 		short rootID = ElementKeyMap.REACTOR_CHAMBER_JUMP;
 		beaconChamber = BlockConfig.newChamber(mod, "Warp Beacon", rootID); //the chamber is the beacon, the addon is the toggle (button)
 		beaconChamber.chamberCapacity = (float) ConfigManager.getWarpBeaconChamberPercent();
@@ -49,9 +49,9 @@ public class WarpBeaconAddon extends SimpleAddOn {
 		StarLoader.registerListener(RegisterAddonsEvent.class, new Listener<>() {
 			@Override
 			public void onEvent(RegisterAddonsEvent event) {
-				event.addModule(new WarpBeaconAddon(event.getContainer(), WarpMain.instance));
+				event.addModule(new WarpBeaconAddon(event.getContainer(), WarpSpace.instance));
 			}
-		}, WarpMain.instance);
+		}, WarpSpace.instance);
 	}
 
 	public static WarpBeaconAddon getAddon(SegmentController s) {
@@ -139,10 +139,10 @@ public class WarpBeaconAddon extends SimpleAddOn {
 	private void onActivation() {
 		if(isOnServer()) {
 			//get/make beacon
-			beacon = WarpMain.getInstance().getBeaconManagerServer().getBeaconByUID(getSegmentController().getUniqueIdentifier());
+			beacon = WarpSpace.getInstance().getBeaconManagerServer().getBeaconByUID(getSegmentController().getUniqueIdentifier());
 			if(beacon == null) {
 				beacon = new BeaconObject(segmentController);
-				WarpMain.getInstance().getBeaconManagerServer().addBeacon(beacon);
+				WarpSpace.getInstance().getBeaconManagerServer().addBeacon(beacon);
 			}
 
 			//toggle beacon

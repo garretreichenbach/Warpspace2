@@ -6,7 +6,7 @@ import api.listener.events.controller.ServerInitializeEvent;
 import api.mod.StarLoader;
 import api.mod.StarMod;
 import api.utils.registry.UniversalRegistry;
-import glossar.GlossarInit;
+import org.schema.game.client.view.mainmenu.GuidesRegistry;
 import org.schema.schine.resource.ResourceLoader;
 import warpspace.beacon.BeaconManager;
 import warpspace.beacon.WarpBeaconAddon;
@@ -22,22 +22,21 @@ import warpspace.manager.ConfigManager;
 import warpspace.manager.EventManager;
 import warpspace.manager.LoopManager;
 import warpspace.manager.PacketManager;
-import warpspace.util.Updater;
 
 /**
  * Entry point for the WarpSpace mod. Each lifecycle hook delegates to the
  * managers under {@link warpspace.manager} so that the ordering of
  * initialization is visible in one place.
  */
-public class WarpMain extends StarMod {
+public class WarpSpace extends StarMod {
 
-	public static WarpMain instance;
+	public static WarpSpace instance;
 
 	private BeaconManager beaconManagerServer;
 	private BeaconManager beaconManagerClient;
 	private DropPointMapDrawer dropPointMapDrawer;
 
-	public static WarpMain getInstance() {
+	public static WarpSpace getInstance() {
 		return instance;
 	}
 
@@ -59,7 +58,6 @@ public class WarpMain extends StarMod {
 		instance = this;
 
 		ConfigManager.initialize(this);
-		new Updater(getSkeleton().getModVersion()).runUpdate();
 
 		StarLoader.registerCommand(new DebugUI());
 
@@ -103,10 +101,20 @@ public class WarpMain extends StarMod {
 		beaconManagerClient.onInit();
 		dropPointMapDrawer.activate();
 
-		GlossarInit.initGlossar(this);
-		GlossarInit.addCategory(WarpGlossar.buildCategory());
-
 		new SoundQueueManager();
+	}
+
+	@Override
+	public void onRegisterGuides(GuidesRegistry.ModGuideRegistrar registrar) {
+		String sectionKey = "warpspace";
+		String sectionLabel = "WarpSpace 2";
+		registrar.registerFromResource(sectionKey, sectionLabel, "Introduction", "docs/introduction.md", this);
+		registrar.registerFromResource(sectionKey, sectionLabel, "Jumping", "docs/jumping.md", this);
+		registrar.registerFromResource(sectionKey, sectionLabel, "Warp Beacons", "docs/warp-beacon.md", this);
+		registrar.registerFromResource(sectionKey, sectionLabel, "Map", "docs/map.md", this);
+		registrar.registerFromResource(sectionKey, sectionLabel, "Inhibition", "docs/inhibition.md", this);
+		registrar.registerFromResource(sectionKey, sectionLabel, "HUD", "docs/hud.md", this);
+		registrar.registerFromResource(sectionKey, sectionLabel, "Configuration", "docs/configuration.md", this);
 	}
 
 	@Override

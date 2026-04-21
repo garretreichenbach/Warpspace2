@@ -6,7 +6,7 @@ import api.utils.StarRunnable;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.graphicsengine.forms.font.FontLibrary;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.core.WarpManager;
 
 import java.util.Vector;
@@ -96,6 +96,6 @@ public class WarpHUDPanel { //TODO refactor messy class, make instatiable like C
 				//
 				setTextEl(text);
 			}
-		}.runTimer(WarpMain.instance, 5);
+		}.runTimer(WarpSpace.instance, 5);
 	}
 }

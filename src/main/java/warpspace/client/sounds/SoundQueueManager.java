@@ -4,7 +4,7 @@ import api.utils.StarRunnable;
 import api.utils.sound.AudioUtils;
 import org.apache.commons.io.IOUtils;
 import org.schema.schine.graphicsengine.core.Controller;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.client.WarpProcess;
 
 import javax.sound.sampled.AudioFormat;
@@ -28,7 +28,7 @@ public class SoundQueueManager {
         instance = this;
         installSounds();
 
-        String path = WarpMain.instance.getSkeleton().getResourcesFolder().getPath().replace("\\","/")+"/resources/sounds/"; //in moddata
+        String path = WarpSpace.instance.getSkeleton().getResourcesFolder().getPath().replace("\\","/")+"/resources/sounds/"; //in moddata
 
           File f;
           for (int i = 0; i< SoundEntry.values().length; i++) {
@@ -43,10 +43,10 @@ public class SoundQueueManager {
                       double durationInSeconds = (frames+0.0)/format.getFrameRate();
                       soundEntry.setDuration((long)(durationInSeconds*1000));
                   } catch (UnsupportedAudioFileException | IOException e) {
-	                  WarpMain.getInstance().logException("Failed to read audio duration for " + SoundEntry.values()[i].getSoundName(), e);
+	                  WarpSpace.getInstance().logException("Failed to read audio duration for " + SoundEntry.values()[i].getSoundName(), e);
                   }
               } else {
-	              WarpMain.getInstance().logWarning("warp sounds file not found: " + SoundEntry.values()[i].getSoundName());
+	              WarpSpace.getInstance().logWarning("warp sounds file not found: " + SoundEntry.values()[i].getSoundName());
               }
           }
         initLoop();
@@ -57,7 +57,7 @@ public class SoundQueueManager {
      * will add sounds and install soundfiles to the client if they dont already exist.
      */
     private void installSounds() {
-        String folderPath = WarpMain.instance.getSkeleton().getResourcesFolder().getPath().replace("\\","/")+"/resources/sounds/"; //in moddata
+        String folderPath = WarpSpace.instance.getSkeleton().getResourcesFolder().getPath().replace("\\","/")+"/resources/sounds/"; //in moddata
         File dir = new File(folderPath);
         if (!dir.exists())
             dir.mkdirs();
@@ -74,7 +74,7 @@ public class SoundQueueManager {
                     //install sound files to client
                     String jarPath = "resources/sounds/" + SoundEntry.values()[i].getSoundName()+".wav";
 
-                    InputStream source = WarpMain.instance.getSkeleton().getClassLoader().getResourceAsStream(jarPath);
+                    InputStream source = WarpSpace.instance.getSkeleton().getClassLoader().getResourceAsStream(jarPath);
 
                     File targetFile = new File(".",path);
                     targetFile.createNewFile();
@@ -89,10 +89,10 @@ public class SoundQueueManager {
 
                     file = new File(path);
                     if (!file.exists()) {
-	                    WarpMain.getInstance().logWarning("Expected sound file to exist after copy but missing: " + path);
+	                    WarpSpace.getInstance().logWarning("Expected sound file to exist after copy but missing: " + path);
                     }
                 } catch (IOException | NullPointerException e) {
-	                WarpMain.getInstance().logException("Failed to install sound file " + path, e);
+	                WarpSpace.getInstance().logException("Failed to install sound file " + path, e);
                 }
             }
             assert file.exists():"installation of warpspace soundfiles failed";
@@ -168,7 +168,7 @@ public class SoundQueueManager {
                     }
                 }
             }
-        }.runTimer(WarpMain.instance,1);
+        }.runTimer(WarpSpace.instance,1);
     }
     public enum SoundEntry {
         //voices

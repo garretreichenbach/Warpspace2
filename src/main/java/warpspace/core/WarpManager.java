@@ -3,7 +3,7 @@ package warpspace.core;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.Galaxy;
-import warpspace.WarpMain;
+import warpspace.WarpSpace;
 import warpspace.manager.ConfigManager;
 
 import javax.vecmath.Vector3f;
@@ -34,11 +34,11 @@ public class WarpManager {
 	 */
 	public static boolean isInWarp(SimpleTransformableSendableObject<?> object) {
 		if(object == null) {
-			WarpMain.getInstance().logWarning("isInWarp called with null object");
+			WarpSpace.getInstance().logWarning("isInWarp called with null object");
 			return false;
 		}
 		if(object.getSector(new Vector3i()) == null) {
-			WarpMain.getInstance().logWarning("isInWarp object has no sector: " + object.getName());
+			WarpSpace.getInstance().logWarning("isInWarp object has no sector: " + object.getName());
 			return false;
 		}
 		return isInWarp(object.getSector(new Vector3i()));
@@ -85,7 +85,7 @@ public class WarpManager {
 		Vector3f warpPosF = warpSpacePos.toVector3f();
 		warpPosF.y -= offset; //offset sectors to up (y axis)
 		random.setSeed(warpSpacePos.code());
-		double randomOffset = ConfigManager.getDroppointRandomOffset();
+		double randomOffset = ConfigManager.getDropPointRandomOffset();
 		warpPosF.x = Math.round((random.nextBoolean() ? -1 : 1) * random.nextFloat() * randomOffset + warpPosF.x * getScale());
 		warpPosF.y = Math.round((random.nextBoolean() ? -1 : 1) * random.nextFloat() * randomOffset + warpPosF.y * getScale());
 		warpPosF.z = Math.round((random.nextBoolean() ? -1 : 1) * random.nextFloat() * randomOffset + warpPosF.z * getScale());

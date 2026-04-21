@@ -86,12 +86,20 @@ public enum WarpProcess {
                 //is server(implicit)
                 LinkedList<PlayerState> disconnected = new LinkedList<>();
                 for (PlayerState p: GameServerState.instance.getPlayerStatesByName().values()) {
-                    setProcess(p, DUMMMY, 0);
-                    if (GameServerState.instance.getClients().containsKey(p.getClientId()) &&
-                            GameServerState.instance.getPlayerStatesByName().containsKey(p.getName()))
-                        synchToClient(p);
-                    else {
-                        disconnected.add(p);//todo build proper garbage collection
+                    // Isolate per-player failures so one bad player state (e.g. a
+                    // PlayerState still in the map mid-disconnect, a null processor,
+                    // or a packet-send NPE) doesn't abort the whole sweep for every
+                    // other player.
+                    try {
+                        setProcess(p, DUMMMY, 0);
+                        if (GameServerState.instance.getClients().containsKey(p.getClientId()) &&
+                                GameServerState.instance.getPlayerStatesByName().containsKey(p.getName())) {
+                            synchToClient(p);
+                        } else {
+                            disconnected.add(p);
+                        }
+                    } catch (Exception e) {
+                        WarpSpace.getInstance().logException("WarpProcess sync failed for player " + (p == null ? "null" : p.getName()), e);
                     }
                 }
 

@@ -1,64 +1,122 @@
-# Warpspace
-## StarMade mod that completely overhauls fast travel
+# WarpSpace 2
 
-Todo: Update this
+A StarMade mod that replaces the vanilla "teleport" jump drive with a
+**parallel dimension** called *Warpspace* — a compressed copy of realspace
+where every 10 realspace sectors fit into 1 warp sector. Trips through warp
+are fast but still physical, so FTL travel becomes predictable, shared, and
+interceptable.
 
-This mod explores the idea to have a space in which you travel to get from point a to point b, but faster than normal flight.
-The mod creates a WarpSpace, similar to the minecraft nether in concept. Every meter travelled in the warp translates into 10 meters travelled in real space.
-So instead of teleporting from a to b (vanilla FTL), you change into the warp, fly the distance which is 10 times shorter, and drop back out of warp.
-Some core effects are:
-- no more instant travel, longer distances take longer time.
-- a shared space where you can meet other travellers, be attacked or attack others (actual the likelihood is increased by factor 1000 since 1 warp sector represents 10x10x10 real space sectors.)
-- you can now follow warping players, as the warp behaves similar to real space in its flight dynamics.
-- warp entry points are created (this is a side effect of the downscaling by factor 10). since all ships entering warp in a 10x10x10 sector cube end up in the same warp sector,
-all ships exiting the warp end up in the same real space sector. This creates warp nodes, or travel routes where each star system has 4 nodes. Any ship entering the star system  through warp will end up at one of them.
-These nodes could be defended or used for trade, taxing, piracy etc.
+Successor to the original [Warpspace](https://github.com/IR0NSIGHT/Warpspace)
+by IR0NSIGHT, rebuilt on SpongePowered Mixin and the modern StarLoader APIs.
 
+---
 
-# Ingame behaviour/How to use
-- the mod will notice any FTL jump a ship performs. instead of arriving at your location, you will enter the warp.
-- Your nav marker will be changed to its warp position as well. Just follow the marker to get to the correct position in warp.
-- to drop out of warp you can either use your FTL drive again, or slow down to below 50m/s.
-- FTL usage will drop you out of warp instantly, slowing down will give you a 10 second countdown and show you a warning.
-- if you spawn a space station in warp, it will drop out to a random sector! thats wanted behaviour to prohibit warpcamping.
-- astronauts will not drop out of warp automatically.
-- if you want to avoid the warp completely, you can create Warp gates. they keep their vanilla behaviour and offer a way to travel instantly, precisely and safely.
+## Core concept
 
-### Beacons:
-https://github.com/IR0NSIGHT/Warpspace/blob/master/src/me/iron/WarpSpace/Mod/beacon/beaconHelp.md
+Instead of vanishing and reappearing at your waypoint, your ship drops into
+Warpspace, physically travels the (shorter) distance, and drops back out at
+a droppoint near your destination.
 
-# Planned features are:
-+ ~~t interdiction to work (is ignored atm)~~ done, even better than vanilla
-+ ~~build custom HUD~~ done
-+ make damaged ships automatically fall out of warp
-+ create means to force-pull warping ships out, like the Star-Wars interdictors.
-+ ~~give warp custom visual effects to highlight the difference to realspace~~ semi done with recolored backgrounds
-+ ~~make the thrust strength (= possible travel speed) in warp depend on the FTL drives level~~ waiting for SM update for hook
-+ explore means of making warp more interesting and different to realspace
-		+ core principles here are that warp should not be just a smaller realspace 2.0 but behave differently
-		+ ~~make station building impossible~~ (done, autodrop)
-		+ shields not working
-		+ ~~a limited time in warp, where a counter autodrops the ship back out (using speed limit, done)~~
-+ Make AI/fleets be able to use warp
+- **Shared dimension.** Every ship in warp is in the same warpspace; you can
+  intercept or be intercepted mid-trip.
+- **Predictable timing.** Trips have a real duration, so defenders can
+  respond to incoming threats.
+- **Droppoint grid.** Warp exits land on a coarse grid. Warp Beacons let
+  stations override the grid for their region.
+- **Reworked inhibitors.** Inhibitor chambers can deny warp jumps within a
+  3-sector radius, with a reactor-size rule to stop small ships from
+  shutting down capital traffic.
 
-Gain insight to how the mod handles ingame with this showcase video (very early version):
-https://www.youtube.com/watch?v=0t-y4ZppfLg
+## Features
 
-StarmadeDock mod page:
-https://starmadedock.net/content/warpspace.8166/
+- **Warpspace dimension** with configurable warp-to-realspace scale (default
+  10×) and per-chamber flight speed multipliers.
+- **Warp Beacon chambers** that redirect nearby droppoints to a station's
+  sector.
+- **Rewritten HUD** in the bottom-right corner — icon set for dimension,
+  jump state, and inhibition.
+- **Map overlays** — natural/shifted droppoints in realspace, scaled galaxy
+  view in warp.
+- **In-game guides** accessible from the main menu's Guides dialog (see
+  [Documentation](#documentation)).
+- **Two-layer config**: server-authoritative settings (auto-synced to
+  clients) and client-local preferences.
 
-StarmadeDock blog page:
-https://starmadedock.net/threads/an-alternative-ftl-system-warpspace.31607/page-2#post-380687
+## Install
 
-Find the documentation here:
-https://ir0nsight.github.io/Warpspace/
+1. Open the in-game mod browser.
+2. Find **WarpSpace 2** and click **Install**.
+3. Make sure the mod is enabled in the mod list.
 
-Starloader community discord for bugreports/feedback/help:
-https://discord.gg/hcpSphM
+No external dependencies or class-resizing required — this version uses
+Mixin, not a core-mod-style class overwrite.
 
-# Install guide
-- use the builtin, in-game mod browser, find WarpSpace and click "install".
-- make sure the mod is activated.
+## Documentation
 
-If you have the suspicion that something is not working or the mod is not running at all, contact me or the starloader discord.
-Since Starloader is a community project and still in developement, its likely that it will break mods when it updates. I do my best to fix this fast, but it can take a couple days. Let me know if its broken, so i can update it.
+Detailed usage guides ship with the mod and appear in the **Guides** viewer
+(main menu → Guides). They cover:
+
+| Guide          | Topic                                                      |
+|----------------|------------------------------------------------------------|
+| Introduction   | Concept, why Warpspace, contributors                       |
+| Jumping        | Step-by-step trip procedure, warp flight chambers          |
+| Warp Beacons   | Deploying beacons, requirements, tactical notes            |
+| Map            | Droppoint and warp-sector marker legend                    |
+| Inhibition     | Reach, reactor-size rule, what gets blocked                |
+| HUD            | Icon reference for the corner HUD                          |
+| Configuration  | Server and client config entries with defaults             |
+
+The guide markdown lives in [`src/main/resources/docs/`](src/main/resources/docs/)
+if you want to read it outside the game.
+
+## Building from source
+
+Requires JDK 21, gradle 8+, and a local StarMade dev-build install.
+
+1. Edit `gradle.properties` and set `starmade_root` to your StarMade install
+   directory (trailing slash required).
+2. Build:
+   ```
+   ./gradlew jar
+   ```
+   The resulting jar is copied into `<starmade_root>/mods/`.
+
+### Project layout
+
+```
+src/main/java/warpspace/
+├── WarpSpace.java        entry point
+├── beacon/               warp beacon feature
+├── client/               client-side code
+│   ├── hud/                HUD pipeline
+│   ├── map/                map overlays (+ util/ for custom map drawer)
+│   ├── rendering/          WarpSkybox shader
+│   └── sounds/             audio
+├── core/                 domain logic (WarpManager, WarpJumpManager, ...)
+├── listener/             cross-subsystem event listeners
+├── manager/              ConfigManager (SimpleConfig), Event/Loop/PacketManager
+├── mixin/                SpongePowered Mixin patches
+├── network/              packet definitions
+├── server/               server-only loops and state refresh
+└── util/                 small utilities
+
+src/main/resources/
+├── docs/                 in-game guides (markdown + SVG)
+├── mod.json              mod descriptor
+├── warpspace.mixins.json mixin config
+└── resources/            assets (sprites, shaders, sounds, meshes)
+```
+
+## Credits
+
+- **IR0NSIGHT** — original author
+- **JakeV** — warp thrust
+- **Taswin** — map in warp
+- **MekTek** — GUI
+- **Ithirahad** — VFX & tweaks
+- **DarkenWizMan** — SFX
+- **TheDerpGamer** — current maintainer
+
+## License
+
+[MIT](LICENSE). Copyright © 2020 IR0NSIGHT.

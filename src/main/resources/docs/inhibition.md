@@ -2,7 +2,7 @@
 
 Inhibitors block warp travel within a radius. They work in both dimensions —
 one inhibitor can deny ships **entering** the sector and **leaving via jump
-drive**. Slow speeddrops from warpspace are the only way to pierce an active
+drive**. Slow speed drops from warpspace are the only way to pierce an active
 inhibitor.
 
 ## Range and reactor rule

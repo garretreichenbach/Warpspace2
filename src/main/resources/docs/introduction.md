@@ -64,7 +64,7 @@ reappearing, your ship physically travels - in Warpspace distances are
 ```
 
 /// caption
-The Warp is a parallel, compressed copy of realspace. Every 10 realspace sectors collapses into 1 warp sector, so long-distance travel is much faster — but the trip is still physical, not instantaneous.
+Warpspace is a parallel, compressed copy of realspace. Every 10 realspace sectors collapses into 1 warp sector, so long-distance travel is much faster — but the trip is still physical, not instantaneous.
 ///
 
 ## Why it matters

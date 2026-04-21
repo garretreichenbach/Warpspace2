@@ -1,4 +1,4 @@
-package warpspace;
+package warpspace.core;
 
 import api.utils.element.Blocks;
 import org.schema.game.common.data.element.ElementInformation;

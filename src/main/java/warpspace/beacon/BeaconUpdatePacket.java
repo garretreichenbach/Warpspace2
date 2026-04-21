@@ -1,26 +1,19 @@
 package warpspace.beacon;
 
-import java.io.IOException;
-
-import org.schema.game.common.data.player.PlayerState;
-import org.schema.game.server.data.GameServerState;
-
 import api.network.Packet;
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
 import api.network.packets.PacketUtil;
+import org.schema.game.common.data.player.PlayerState;
+import org.schema.game.server.data.GameServerState;
 import warpspace.WarpMain;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 26.10.2021
- * TIME: 21:58
- */
+import java.io.IOException;
+
 public class BeaconUpdatePacket extends Packet {
     @Override
     public void readPacketData(PacketReadBuffer packetReadBuffer) throws IOException {
-        BeaconManager client = WarpMain.instance.beaconManagerClient;
+	    BeaconManager client = WarpMain.getInstance().getBeaconManagerClient();
         if (client == null)
             return;
         client.onDeserialize(packetReadBuffer);
@@ -28,7 +21,7 @@ public class BeaconUpdatePacket extends Packet {
 
     @Override
     public void writePacketData(PacketWriteBuffer packetWriteBuffer) throws IOException {
-        WarpMain.instance.beaconManagerServer.onSerialize(packetWriteBuffer);
+	    WarpMain.getInstance().getBeaconManagerServer().onSerialize(packetWriteBuffer);
     }
 
     @Override

@@ -1,20 +1,14 @@
 package warpspace.server;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 28.10.2020
- * TIME: 15:17
- */
 
 import org.schema.game.common.data.player.AbstractCharacter;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.network.objects.Sendable;
-import warpspace.TimedRunnable;
-import warpspace.WarpEntityManager;
 import warpspace.WarpMain;
+import warpspace.core.WarpEntityManager;
 import warpspace.manager.ConfigManager;
+import warpspace.util.TimedRunnable;
 
 /**
  * a loop that runs regularly and checks all loaded ships if they are in warp or not. passes the ships to the warpshipmanager
@@ -41,7 +35,7 @@ public class WarpCheckLoop {
 						}
 
 						if(!WarpEntityManager.isWarpEntity(obj)) {
-							WarpEntityManager.DeclareWarpEntity(obj);
+							WarpEntityManager.declareWarpEntity(obj);
 						}
 					}
 				}

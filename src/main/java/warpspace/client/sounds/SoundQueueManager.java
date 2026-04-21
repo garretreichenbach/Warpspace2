@@ -1,28 +1,23 @@
 package warpspace.client.sounds;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedList;
+import api.utils.StarRunnable;
+import api.utils.sound.AudioUtils;
+import org.apache.commons.io.IOUtils;
+import org.schema.schine.graphicsengine.core.Controller;
+import warpspace.WarpMain;
+import warpspace.client.WarpProcess;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.LinkedList;
 
-import org.apache.commons.io.IOUtils;
-import org.schema.schine.graphicsengine.core.Controller;
-
-import api.utils.StarRunnable;
-import api.utils.sound.AudioUtils;
-import warpspace.WarpMain;
-import warpspace.client.WarpProcess;
-
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 18.12.2021
- * TIME: 19:28
- */
 public class SoundQueueManager {
     public static SoundQueueManager instance;
     private HashMap<String, SoundQueue> uid_to_queues = new HashMap<>();
@@ -48,10 +43,10 @@ public class SoundQueueManager {
                       double durationInSeconds = (frames+0.0)/format.getFrameRate();
                       soundEntry.setDuration((long)(durationInSeconds*1000));
                   } catch (UnsupportedAudioFileException | IOException e) {
-                      e.printStackTrace();
+	                  WarpMain.getInstance().logException("Failed to read audio duration for " + SoundEntry.values()[i].getSoundName(), e);
                   }
               } else {
-                  new FileNotFoundException("warp sounds file " + SoundEntry.values()[i].getSoundName()).printStackTrace();
+	              WarpMain.getInstance().logWarning("warp sounds file not found: " + SoundEntry.values()[i].getSoundName());
               }
           }
         initLoop();
@@ -94,12 +89,10 @@ public class SoundQueueManager {
 
                     file = new File(path);
                     if (!file.exists()) {
-                        new FileNotFoundException().printStackTrace();
-                    } else {
-                        ;
+	                    WarpMain.getInstance().logWarning("Expected sound file to exist after copy but missing: " + path);
                     }
                 } catch (IOException | NullPointerException e) {
-                    e.printStackTrace();
+	                WarpMain.getInstance().logException("Failed to install sound file " + path, e);
                 }
             }
             assert file.exists():"installation of warpspace soundfiles failed";

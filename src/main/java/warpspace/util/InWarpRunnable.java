@@ -1,17 +1,15 @@
-package warpspace;
+package warpspace.util;
 
 import org.schema.game.common.controller.Ship;
 import org.schema.game.common.data.player.AbstractCharacter;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
+import warpspace.WarpMain;
 import warpspace.client.WarpProcess;
+import warpspace.core.WarpEntityManager;
+import warpspace.core.WarpJumpManager;
+import warpspace.core.WarpManager;
 import warpspace.manager.ConfigManager;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 30.09.2022
- * TIME: 14:45
- */
 public class InWarpRunnable extends TimedRunnable {
 	private final int entityId;
 	private SimpleTransformableSendableObject<?> entity;
@@ -49,7 +47,7 @@ public class InWarpRunnable extends TimedRunnable {
 				updateRSP();
 			}
 		} else {
-			WarpEntityManager.RemoveWarpEntity(entityId);
+			WarpEntityManager.removeWarpEntity(entityId);
 		}
 	}
 
@@ -77,7 +75,7 @@ public class InWarpRunnable extends TimedRunnable {
 		}
 		if(countdown_millis <= 0) {
 			//drop entity out of warp.
-			System.out.println("dropping entity" + entity.getUniqueIdentifier() + " type " + entity.getClass().getName() + " CAUSE: SPEED_DROP");
+			WarpMain.getInstance().logInfo("dropping entity " + entity.getUniqueIdentifier() + " type " + entity.getClass().getName() + " CAUSE: SPEED_DROP");
 			WarpJumpManager.invokeDrop(0, entity, false, false);
 		}
 	}

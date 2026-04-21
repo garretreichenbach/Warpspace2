@@ -1,23 +1,22 @@
 package warpspace.client;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-
+import api.network.packets.PacketUtil;
+import api.utils.StarRunnable;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.client.data.GameClientState;
 import org.schema.game.client.data.PlayerControllable;
 import org.schema.game.common.data.player.PlayerState;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
-
-import api.network.packets.PacketUtil;
-import api.utils.StarRunnable;
-import warpspace.Interdiction.ExtraEventLoop;
-import warpspace.WarpJumpManager;
 import warpspace.WarpMain;
-import warpspace.WarpManager;
+import warpspace.core.WarpJumpManager;
+import warpspace.core.WarpManager;
 import warpspace.network.PacketHUDUpdate;
+import warpspace.server.WarpStateUpdater;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * enum containing available processes that can happen to a player like jumping to warp.
@@ -131,9 +130,9 @@ public enum WarpProcess {
      * @param p playerstate player
      */
     public static void synchToClient(PlayerState p) {
-        if (!player_to_processArr.containsKey(p))
+	    if(!player_to_processArr.containsKey(p)) {
             return;
-        //FIXME PacketUtil.getServerProcessor throws nullpointer here sometimes
+	    }
         preSynchServer(p);
 
         if (GameClientState.instance != null && GameClientState.instance.getPlayer().equals(p)) {
@@ -148,7 +147,7 @@ public enum WarpProcess {
 
     private static void preSynchServer(PlayerState p) {
         //handle values that are always updated
-        ExtraEventLoop.updatePlayer(p);
+	    WarpStateUpdater.updatePlayer(p);
     }
 
     public static long[] toArray() {

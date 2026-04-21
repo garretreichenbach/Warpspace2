@@ -1,8 +1,9 @@
-package warpspace;
+package warpspace.core;
 
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.Galaxy;
+import warpspace.WarpMain;
 import warpspace.manager.ConfigManager;
 
 import javax.vecmath.Vector3f;

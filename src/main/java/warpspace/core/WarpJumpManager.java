@@ -1,9 +1,7 @@
-package warpspace;
+package warpspace.core;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Random;
-
+import api.common.GameServer;
+import api.mod.StarLoader;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.controller.SegmentController;
 import org.schema.game.common.controller.Ship;
@@ -15,19 +13,16 @@ import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.common.language.Lng;
 import org.schema.schine.network.server.ServerMessage;
-
-import api.common.GameServer;
-import api.mod.StarLoader;
+import warpspace.WarpMain;
 import warpspace.beacon.BeaconManager;
 import warpspace.client.WarpProcess;
 import warpspace.manager.ConfigManager;
+import warpspace.util.TimedRunnable;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 28.10.2020
- * TIME: 15:13
- */
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Random;
+
 
 /**
  * handles all jumps happening and related methods like checking for interdiction etc.
@@ -38,7 +33,7 @@ public class WarpJumpManager {
 	public static HashSet<SimpleTransformableSendableObject> entryQueue = new HashSet<>();
 
 	public static void invokeJumpdriveUsed(SimpleTransformableSendableObject object, boolean forceJump) {
-		System.out.println("entity used its jumpdrive: " + object.getUniqueIdentifier() + " type " + object.getClass().getName());
+		WarpMain.getInstance().logInfo("entity used its jumpdrive: " + object.getUniqueIdentifier() + " type " + object.getClass().getName());
 		if(!forceJump && (object instanceof Ship && !canExecuteWarpdrive((Ship) object)))
 			return;
 		//check if ship is in warp or not, check if ship is allowed to perform the jump
@@ -242,7 +237,7 @@ public class WarpJumpManager {
 	 * @return
 	 */
 	public static boolean isDroppointShifted(Vector3i warpSector) {
-		BeaconManager bm = (WarpMain.instance.beaconManagerServer != null) ? WarpMain.instance.beaconManagerServer : WarpMain.instance.beaconManagerClient;
+		BeaconManager bm = (WarpMain.getInstance().getBeaconManagerServer() != null) ? WarpMain.getInstance().getBeaconManagerServer() : WarpMain.getInstance().getBeaconManagerClient();
 		return bm.hasActiveBeacon(warpSector);
 	}
 
@@ -274,7 +269,7 @@ public class WarpJumpManager {
 		try {
 			sector = GameServer.getUniverse().getSector(position);
 		} catch(IOException e) {
-			e.printStackTrace();
+			WarpMain.getInstance().logException("Failed to fetch sector at " + position + " for interdiction check", e);
 			return false;
 		}
 		if(sector == null) {
@@ -340,7 +335,7 @@ public class WarpJumpManager {
 		warpSector = new Vector3i(warpSector);
 		//apply warp-beacon. inform player if beacon had effect.
 		Vector3i drop = WarpManager.getRealSpacePos(warpSector);
-		BeaconManager bm = (WarpMain.instance.beaconManagerServer != null) ? WarpMain.instance.beaconManagerServer : WarpMain.instance.beaconManagerClient;
+		BeaconManager bm = (WarpMain.getInstance().getBeaconManagerServer() != null) ? WarpMain.getInstance().getBeaconManagerServer() : WarpMain.getInstance().getBeaconManagerClient();
 		bm.updateStrongest(warpSector);
 		bm.modifyDroppoint(warpSector, drop);
 		return drop;

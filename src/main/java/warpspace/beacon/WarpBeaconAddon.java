@@ -19,12 +19,6 @@ import org.schema.schine.network.server.ServerMessage;
 import warpspace.WarpMain;
 import warpspace.manager.ConfigManager;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 26.10.2021
- * TIME: 19:31
- */
 public class WarpBeaconAddon extends SimpleAddOn {
 	public static final String UIDName = "WARP_BEACON_SIMPLE";
 	public static ElementInformation beaconChamber;
@@ -145,10 +139,10 @@ public class WarpBeaconAddon extends SimpleAddOn {
 	private void onActivation() {
 		if(isOnServer()) {
 			//get/make beacon
-			beacon = WarpMain.instance.beaconManagerServer.getBeaconByUID(getSegmentController().getUniqueIdentifier());
+			beacon = WarpMain.getInstance().getBeaconManagerServer().getBeaconByUID(getSegmentController().getUniqueIdentifier());
 			if(beacon == null) {
 				beacon = new BeaconObject(segmentController);
-				WarpMain.instance.beaconManagerServer.addBeacon(beacon);
+				WarpMain.getInstance().getBeaconManagerServer().addBeacon(beacon);
 			}
 
 			//toggle beacon

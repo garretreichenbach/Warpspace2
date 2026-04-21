@@ -60,7 +60,7 @@ public class PacketHUDUpdate extends Packet {
 	public void processPacketOnClient() {
 		//set players process "map" (enum)
 		WarpProcess.update(arr);
-		HUDCore.UpdateHUD();
+		HUDCore.updateHUD();
 	}
 
 	@Override

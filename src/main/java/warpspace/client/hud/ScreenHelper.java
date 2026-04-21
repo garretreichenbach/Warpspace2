@@ -1,74 +1,59 @@
 package warpspace.client.hud;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 20.02.2021
- * TIME: 13:38
- */
-
 import warpspace.WarpMain;
 
 import javax.vecmath.Vector3f;
 import java.awt.*;
 
 /**
- * helper class that provides methods for scaling screenposititons according to resolution,  etc.
+ * Helpers for converting between relative (percentage of screen) and
+ * absolute (pixel) screen coordinates.
  */
-public class ScreenHelper {
+public final class ScreenHelper {
+
+	private ScreenHelper() {
+	}
+
 	/**
-	 * adjust given position in % of screen to current resolution. center: (0.5,0.5,0) -- pxPos (1920/2,1080/2,0) (assuming current screen is full HD).
-	 * creates new vector.
-	 *
-	 * @param pos relative position in percent on screen
-	 * @return position in absolute pixels
+	 * Adjust given position (in fraction-of-screen, e.g. 0.5,0.5,0 = center)
+	 * to current resolution pixels. Creates a new vector.
 	 */
 	public static Vector3f relPosToPixelPos(Vector3f pos) {
 		return relPosToPixelPos(pos, false);
 	}
 
 	/**
-	 * get pixel position from relative screen positon, use only screenwidth to scale
+	 * Convert fractional-screen position to pixel position.
 	 *
-	 * @param pos       relative position in percent on screen
-	 * @param onlyWidth only use screenwidht to scale pos vector
-	 * @return position in absolute pixels
+	 * @param onlyWidth if true, uses only screen height for both x and y (preserves square aspect on resolution changes).
 	 */
 	public static Vector3f relPosToPixelPos(Vector3f pos, boolean onlyWidth) {
 		Vector3f screenRes = getCurrentScreenResolution();
-		Vector3f screenPos = new Vector3f(pos);
 		if(onlyWidth) {
 			screenRes = new Vector3f(screenRes.y, screenRes.y, 0);
 		}
-		;
-		scaleMultiply(screenPos, screenRes); //mutate screenpos
-
-		return screenPos; //TODO write
+		Vector3f screenPos = new Vector3f(pos);
+		scaleMultiply(screenPos, screenRes);
+		return screenPos;
 	}
 
 	/**
-	 * get relative position on screen from pixel position
+	 * Convert pixel position to fractional-screen position.
 	 *
-	 * @param pos       pixel position
-	 * @param onlyWidth use only width for x and y(for quadratic scaling on resolutionchange)
-	 * @return relative screenpos in percent
+	 * @param onlyWidth if true, uses only screen height for both x and y (preserves square aspect on resolution changes).
 	 */
 	public static Vector3f pixelPosToRelPos(Vector3f pos, boolean onlyWidth) {
 		Vector3f screenRes = getCurrentScreenResolution();
-		Vector3f screenPos = new Vector3f(pos);
 		if(onlyWidth) {
 			screenRes = new Vector3f(screenRes.y, screenRes.y, 0);
 		}
-		;
-		scaleDivide(screenPos, screenRes); //mutate screenpos
-
-		return screenPos; //TODO write
+		Vector3f screenPos = new Vector3f(pos);
+		scaleDivide(screenPos, screenRes);
+		return screenPos;
 	}
 
 	/**
-	 * get the resolution in pixels of currently used screen.
-	 *
-	 * @return Vector3f (screenwidht, screenheight, 0)
+	 * @return current screen resolution as (width, height, 0), or null if no graphics device.
 	 */
 	public static Vector3f getCurrentScreenResolution() {
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -76,48 +61,34 @@ public class ScreenHelper {
 			WarpMain.getInstance().logWarning("graphics device is null");
 			return null;
 		}
-		Vector3f screenRes = new Vector3f(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight(), 0); //resolution of current screen
-		return screenRes;
+		return new Vector3f(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight(), 0);
 	}
 
 	/**
-	 * multiplies every position of a with corresponding pos of b: (a.x * b.x, a.y * b.y, a. z * b.z)
-	 *
-	 * @param a Vector to be mutated
-	 * @param b vector which is used to mutate a
+	 * Component-wise multiply: a = (a.x * b.x, a.y * b.y, a.z). Mutates a.
 	 */
 	public static void scaleMultiply(Vector3f a, Vector3f b) {
-		Vector3f aClone = new Vector3f(a);
 		a.set(a.x * b.x, a.y * b.y, a.z);
 	}
 
+	/**
+	 * Component-wise divide: a = (a.x / b.x, a.y / b.y, a.z). Mutates a.
+	 */
 	public static void scaleDivide(Vector3f a, Vector3f b) {
-		Vector3f aClone = new Vector3f(a);
 		a.set(a.x / b.x, a.y / b.y, a.z);
 	}
 
 	/**
-	 * get the vector from position a to position b
-	 *
-	 * @param a point a
-	 * @param b point b
-	 * @return new vector a--b
+	 * @return new vector from point a to point b.
 	 */
 	public static Vector3f getDirection(Vector3f a, Vector3f b) {
-		//b minus a
-		Vector3f sub = new Vector3f(a);
-		sub.negate();
 		Vector3f direction = new Vector3f(b);
-		direction.add(sub);
+		direction.sub(a);
 		return direction;
 	}
 
 	/**
-	 * returns distance between two points
-	 *
-	 * @param a point a
-	 * @param b point b
-	 * @return euclidean distance as float
+	 * @return Euclidean distance between two points.
 	 */
 	public static float getDistance(Vector3f a, Vector3f b) {
 		return getDirection(a, b).length();

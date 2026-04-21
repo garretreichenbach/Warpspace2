@@ -1,11 +1,5 @@
 package warpspace.client.hud;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 20.12.2020
- * TIME: 23:24
- */
 public class HUDElementController {
 	/**
 	 * will enable the given element

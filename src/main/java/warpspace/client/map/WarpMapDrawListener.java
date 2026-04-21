@@ -9,7 +9,7 @@ import org.schema.schine.graphicsengine.core.Controller;
 import org.schema.schine.graphicsengine.core.GlUtil;
 import org.schema.schine.graphicsengine.forms.PositionableSubColorSprite;
 import org.schema.schine.graphicsengine.forms.Sprite;
-import warpspace.WarpManager;
+import warpspace.core.WarpManager;
 
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;

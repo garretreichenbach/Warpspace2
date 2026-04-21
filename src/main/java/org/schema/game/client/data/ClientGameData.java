@@ -10,7 +10,7 @@ import org.schema.game.common.data.element.Element;
 import org.schema.game.common.data.world.RemoteSector;
 import org.schema.schine.common.language.Lng;
 
-import warpspace.WarpManager;
+import warpspace.core.WarpManager;
 
 /**
  * decompiled version edited by ironsight

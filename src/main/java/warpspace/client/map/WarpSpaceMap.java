@@ -13,7 +13,7 @@ import org.schema.game.client.view.gamemap.GameMapDrawer;
 import org.schema.game.server.data.Galaxy;
 import org.schema.schine.graphicsengine.forms.PositionableSubColorSprite;
 import org.schema.schine.graphicsengine.forms.Sprite;
-import warpspace.WarpManager;
+import warpspace.core.WarpManager;
 
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;

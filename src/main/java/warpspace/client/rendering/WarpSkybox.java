@@ -41,11 +41,6 @@ import static org.schema.schine.graphicsengine.core.Controller.getCamera;
 import static warpspace.WarpMain.instance;
 
 /**
- * STARMADE MOD
- * CREATOR: Ithirahad Ivrar'kiim
- * DATE: 21.10.2021
- * TIME: 10:15
- * <br/><br/>
  * Draws a large inside-out sphere with a special shader while in warpspace.
  */
 
@@ -84,13 +79,13 @@ public class WarpSkybox extends ModWorldDrawer implements Shaderable {
 	public static void loadResources(MeshLoader mloader, WarpMain mod) {
 		try {
 			mloader.loadModMesh(mod, "planet_sphere", mod.getJarResource(resourcePath + "planet_sphere.zip"), null);
-			System.err.println("[MOD][WarpSpace] Successfully loaded sphere model");
+			mod.logInfo("Successfully loaded sphere model");
 			bubblePlaceholderTexture = StarLoaderTexture.newSprite(ImageIO.read(mod.getJarResource(resourcePath + "warp_sky_placeholder_tex.png")), mod, "Warp Skybox").getMaterial().getTexture().getTextureId();
 			shader = Shader.newModShader(mod.getSkeleton(), "WarpShader",
 					mod.getJarResource(resourcePath + "warp.vert"),
 					mod.getJarResource(resourcePath + "warp.frag"));
 		} catch(Exception ex) {
-			System.err.println("[MOD][WarpSpace][ERROR] Failed to load skybox draw resources!");
+			mod.logException("Failed to load skybox draw resources", ex);
 		}
 	}
 
@@ -113,7 +108,7 @@ public class WarpSkybox extends ModWorldDrawer implements Shaderable {
 					}
 				} //TODO: This is cursed. Is there really not any better way to get the segmentcontroller a player is attached to?
 				catch(Exception ex) {
-					ex.printStackTrace();
+					WarpMain.getInstance().logException("Failed to resolve player's attached segment controller", ex);
 				}
 			}
 			return null;
@@ -128,12 +123,10 @@ public class WarpSkybox extends ModWorldDrawer implements Shaderable {
 			field.setAccessible(false);
 			return rtn;
 		} catch(IllegalAccessException e) {
-			System.err.println("[MOD][Resources ReSourced] ERROR: Could not access target field \"" + targetInstance.getClass().getName() + "." + fieldName + "\".");
-			e.printStackTrace();
+			WarpMain.getInstance().logException("Could not access target field \"" + targetInstance.getClass().getName() + "." + fieldName + "\"", e);
 			return null;
 		} catch(NoSuchFieldException e) {
-			System.err.println("[MOD][Resources ReSourced] ERROR: Provided field name \"" + targetInstance.getClass().getName() + "." + fieldName + "\" does not correspond to any extant field in the target's superclasses.");
-			e.printStackTrace();
+			WarpMain.getInstance().logException("Field \"" + targetInstance.getClass().getName() + "." + fieldName + "\" does not exist on target or its superclasses", e);
 			return null;
 		}
 	}

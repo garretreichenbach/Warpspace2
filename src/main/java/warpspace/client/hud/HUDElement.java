@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 20.02.2021
- * TIME: 15:14
  * This is the element which serves as a container for an image (sprite) and a text element. it defines position, size etc.
  */
 class HUDElement {

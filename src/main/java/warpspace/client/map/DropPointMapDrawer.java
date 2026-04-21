@@ -1,27 +1,20 @@
 package warpspace.client.map;
 
-import javax.vecmath.Vector4f;
-
-import org.schema.common.util.linAlg.Vector3i;
-import org.schema.game.client.view.gamemap.GameMapDrawer;
-import org.schema.schine.graphicsengine.forms.Sprite;
-
 import api.listener.fastevents.FastListenerCommon;
 import api.mod.StarMod;
 import libpackage.drawer.MapDrawer;
 import libpackage.drawer.SpriteLoader;
 import libpackage.markers.SimpleMapMarker;
-import warpspace.WarpJumpManager;
+import org.schema.common.util.linAlg.Vector3i;
+import org.schema.game.client.view.gamemap.GameMapDrawer;
+import org.schema.schine.graphicsengine.forms.Sprite;
 import warpspace.WarpMain;
-import warpspace.WarpManager;
+import warpspace.core.WarpJumpManager;
+import warpspace.core.WarpManager;
 import warpspace.manager.ConfigManager;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 25.10.2021
- * TIME: 16:20
- */
+import javax.vecmath.Vector4f;
+
 public class DropPointMapDrawer extends MapDrawer {
     private Sprite mapSprite;
     private final Vector3i lastSector = new Vector3i();

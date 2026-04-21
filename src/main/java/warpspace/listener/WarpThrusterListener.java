@@ -9,7 +9,7 @@ import org.schema.game.common.controller.elements.power.reactor.tree.ReactorElem
 import org.schema.game.common.controller.elements.thrust.ThrusterElementManager;
 import org.schema.game.common.data.element.ElementInformation;
 import org.schema.game.common.data.element.ElementKeyMap;
-import warpspace.WarpManager;
+import warpspace.core.WarpManager;
 import warpspace.manager.ConfigManager;
 
 import javax.vecmath.Vector3f;

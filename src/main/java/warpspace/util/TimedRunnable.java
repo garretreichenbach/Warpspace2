@@ -1,4 +1,4 @@
-package warpspace;
+package warpspace.util;
 
 import api.mod.StarMod;
 import api.utils.StarRunnable;

@@ -64,10 +64,9 @@ class SpriteLoader implements Runnable {
 					BufferedImage bi = ImageIO.read(is);
 					value.sprite = StarLoaderTexture.newSprite(bi, WarpMain.instance, "warpmain_" + name);
 				} catch(IOException e) {
-					e.printStackTrace();
+					WarpMain.getInstance().logException("Failed to load HUD sprite", e);
 				}
 			}
-			;
 		}
 	}
 }

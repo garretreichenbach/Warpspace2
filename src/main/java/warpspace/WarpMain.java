@@ -17,10 +17,12 @@ import warpspace.client.map.DropPointMapDrawer;
 import warpspace.client.map.WarpSpaceMap;
 import warpspace.client.rendering.WarpSkybox;
 import warpspace.client.sounds.SoundQueueManager;
+import warpspace.core.WSElementInfoManager;
 import warpspace.manager.ConfigManager;
 import warpspace.manager.EventManager;
 import warpspace.manager.LoopManager;
 import warpspace.manager.PacketManager;
+import warpspace.util.Updater;
 
 /**
  * Entry point for the WarpSpace mod. Each lifecycle hook delegates to the
@@ -31,12 +33,24 @@ public class WarpMain extends StarMod {
 
 	public static WarpMain instance;
 
-	public BeaconManager beaconManagerServer;
-	public BeaconManager beaconManagerClient;
-	public DropPointMapDrawer dropPointMapDrawer;
+	private BeaconManager beaconManagerServer;
+	private BeaconManager beaconManagerClient;
+	private DropPointMapDrawer dropPointMapDrawer;
 
 	public static WarpMain getInstance() {
 		return instance;
+	}
+
+	public BeaconManager getBeaconManagerServer() {
+		return beaconManagerServer;
+	}
+
+	public BeaconManager getBeaconManagerClient() {
+		return beaconManagerClient;
+	}
+
+	public DropPointMapDrawer getDropPointMapDrawer() {
+		return dropPointMapDrawer;
 	}
 
 	@Override

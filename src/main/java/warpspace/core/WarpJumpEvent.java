@@ -1,10 +1,11 @@
-package warpspace;
+package warpspace.core;
 
 import api.listener.events.Event;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.schine.common.language.Lng;
 import org.schema.schine.network.server.ServerMessage;
+import warpspace.WarpMain;
 
 /**
  * mod-owned event

@@ -11,18 +11,12 @@ import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.server.data.GameServerState;
-import warpspace.TimedRunnable;
 import warpspace.WarpMain;
-import warpspace.WarpManager;
+import warpspace.core.WarpManager;
+import warpspace.util.TimedRunnable;
 
 import java.util.*;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 25.10.2021
- * TIME: 12:05
- */
 public class BeaconManager extends SimpleSerializerWrapper {
     private boolean isServer;
     public static BeaconManager getSavedOrNew(ModSkeleton skeleton) {
@@ -73,14 +67,17 @@ public class BeaconManager extends SimpleSerializerWrapper {
                 }
             },WarpMain.instance);
 
-            //listener to activate the beacon addon for ships that get loaded and are logged as beacons.
+	        // Validate beacons when their station reloads. The reactor-side chamber activation
+	        // isn't re-driven on load — WarpBeaconAddon.onActivation toggles rather than sets,
+	        // so calling it here would flip state each reload. Addon visual state may lag the
+	        // persisted BeaconObject until a player manually toggles the chamber.
             StarLoader.registerListener(SegmentControllerFullyLoadedEvent.class, new Listener<SegmentControllerFullyLoadedEvent>() {
                 @Override
                 public void onEvent(SegmentControllerFullyLoadedEvent event) {
                     BeaconObject b = beacon_by_UID.get(event.getController().getUniqueIdentifier());
-                    if (b == null)
+	                if(b == null) {
                         return;
-                    //FIXME infinite loop? b.activateAddon(event.getController());
+	                }
                     updateBeacon(b);
                 }
             }, WarpMain.instance);
@@ -91,7 +88,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
                     try {
                         updateAllBeacons();
                     } catch (Exception e) {
-                        e.printStackTrace();
+	                    WarpMain.getInstance().logException("updateAllBeacons failed", e);
                     }
                 }
             };
@@ -236,7 +233,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
     }
 
     public void synchAll() {
-        if (!WarpMain.instance.beaconManagerServer.equals(this))
+	    if(!WarpMain.getInstance().getBeaconManagerServer().equals(this))
             return;
 
         new BeaconUpdatePacket().sendToAll();
@@ -273,7 +270,7 @@ public class BeaconManager extends SimpleSerializerWrapper {
                         removeBeacon(b);
                     }
                 }
-                WarpMain.instance.dropPointMapDrawer.flagForUpdate();
+	            WarpMain.getInstance().getDropPointMapDrawer().flagForUpdate();
             }
             else {
                 //serverside => loading from persistence

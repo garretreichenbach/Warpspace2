@@ -6,10 +6,6 @@ import org.schema.schine.graphicsengine.forms.gui.GUITextOverlay;
 import org.schema.schine.input.InputState;
 
 /**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 26.10.2020
- * TIME: 21:02
  * blatantly stolen from pilotelement of star api
  */
 public class TextElement extends GUITextOverlay {

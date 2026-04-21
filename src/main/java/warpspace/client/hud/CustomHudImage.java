@@ -8,7 +8,7 @@ import org.schema.schine.graphicsengine.forms.Sprite;
 import org.schema.schine.graphicsengine.shader.ShaderLibrary;
 import org.schema.schine.input.InputState;
 import warpspace.WarpMain;
-import warpspace.WarpManager;
+import warpspace.core.WarpManager;
 
 import javax.vecmath.Vector3f;
 

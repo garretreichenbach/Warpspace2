@@ -1,7 +1,6 @@
 package warpspace.beacon;
 
-import java.io.Serializable;
-
+import api.utils.game.SegmentControllerUtils;
 import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.common.controller.ManagedUsableSegmentController;
 import org.schema.game.common.controller.SegmentController;
@@ -10,15 +9,11 @@ import org.schema.game.common.controller.elements.power.reactor.tree.ReactorElem
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.EntityRequest;
 import org.schema.game.server.data.GameServerState;
-
-import api.utils.game.SegmentControllerUtils;
 import warpspace.manager.ConfigManager;
 
+import java.io.Serializable;
+
 /**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 25.10.2021
- * TIME: 12:11
  * represents the segmentcontroller that is the beacon
  */
 public class BeaconObject implements Serializable {

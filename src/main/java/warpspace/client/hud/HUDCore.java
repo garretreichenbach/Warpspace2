@@ -12,23 +12,17 @@ import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.graphicsengine.forms.font.FontLibrary;
 import org.schema.schine.graphicsengine.forms.gui.GUITextOverlay;
-import warpspace.TimedRunnable;
-import warpspace.WarpJumpManager;
 import warpspace.WarpMain;
-import warpspace.WarpManager;
 import warpspace.client.WarpProcess;
+import warpspace.core.WarpJumpManager;
+import warpspace.core.WarpManager;
+import warpspace.util.TimedRunnable;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 16.12.2020
- * TIME: 19:23
- */
 public class HUDCore {
 
 	public static List<HUDElement> elementList = new ArrayList<>();
@@ -61,7 +55,7 @@ public class HUDCore {
 					if(GameServerState.isShutdown()) {
 						cancel();
 					}
-					UpdateHUD();
+					updateHUD();
 
 					SimpleTransformableSendableObject playerShip = player.getFirstControlledTransformableWOExc();
 
@@ -191,7 +185,7 @@ public class HUDCore {
 	/**
 	 * overwrite custom radar if necessary
 	 */
-	public static void UpdateHUD() {
+	public static void updateHUD() {
 		if(GameClientState.instance == null)
 			return;
 		if(GameClientState.instance.getPlayer().getCurrentSector().length() < 5000 || WarpManager.isInWarp(GameClientState.instance.getPlayer().getCurrentSector()))

@@ -9,22 +9,15 @@ import org.schema.game.common.data.player.PlayerState;
 import org.schema.game.common.data.world.SimpleTransformableSendableObject;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.network.objects.Sendable;
-import warpspace.WarpJumpManager;
 import warpspace.WarpMain;
-import warpspace.WarpManager;
 import warpspace.beacon.BeaconObject;
 import warpspace.client.sounds.SoundQueueManager;
+import warpspace.core.WarpJumpManager;
+import warpspace.core.WarpManager;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 21.12.2020
- * TIME: 14:27
- */
 
 /**
  * runs clientside for HUD arranging on runtime
@@ -82,7 +75,7 @@ public class DebugUI implements CommandInterface {
         //print active pullings
             if (strings[1].equalsIgnoreCase("pulls")) {
                 StringBuilder b = new StringBuilder("All sectors with active beacons:\n");
-                Collection<Vector3i> ss = WarpMain.instance.beaconManagerServer.getBeaconSectors();
+	            Collection<Vector3i> ss = WarpMain.getInstance().getBeaconManagerServer().getBeaconSectors();
                 for (Vector3i s: ss) {
                     b.append("Sector ").append(WarpManager.getRealSpacePos(s)).append("-->").append(WarpJumpManager.getDropPoint(s));
                     b.append("\n");
@@ -92,20 +85,20 @@ public class DebugUI implements CommandInterface {
             }
         //print manager
             if (strings[1].equalsIgnoreCase("manager")) {
-                echo(WarpMain.instance.beaconManagerServer.print(),playerState);
+	            echo(WarpMain.getInstance().getBeaconManagerServer().print(), playerState);
                 return true;
             }
 
         //clear all beacons.
             if (strings[1].equalsIgnoreCase("clear")) {
-                WarpMain.instance.beaconManagerServer.clearBeacons();
+	            WarpMain.getInstance().getBeaconManagerServer().clearBeacons();
                 echo("cleared beacons",playerState);
                 return true;
             }
 
         //invert state for all beacons
             if (strings[1].equalsIgnoreCase("toggle")) {
-                for (BeaconObject b:WarpMain.instance.beaconManagerServer.getBeacons()) {
+	            for(BeaconObject b : WarpMain.getInstance().getBeaconManagerServer().getBeacons()) {
                     b.setActive(!b.isActive());
                 }
                 echo("inverted all beacon states",playerState);

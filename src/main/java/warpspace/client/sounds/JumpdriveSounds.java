@@ -1,13 +1,13 @@
 package warpspace.client.sounds;
 
-import warpspace.TimedRunnable;
 import warpspace.WarpMain;
 import warpspace.client.WarpProcess;
 import warpspace.client.WarpProcessListener;
 import warpspace.manager.ConfigManager;
+import warpspace.util.TimedRunnable;
 
 public class JumpdriveSounds extends WarpProcessListener {
-    public static String queueId = "Engine";
+	public static final String QUEUE_ID = "Engine";
     @Override
     public void onValueChange(WarpProcess c) {
         super.onValueChange(c);
@@ -38,6 +38,6 @@ public class JumpdriveSounds extends WarpProcessListener {
         }
         SoundQueueManager.instance.queueSound(
                 new SoundQueueManager.SoundInstance(e, (float) ConfigManager.getSfxEffectsAddDb(), 1),
-                queueId);
+		        QUEUE_ID);
     }
 }

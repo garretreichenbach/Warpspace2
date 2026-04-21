@@ -7,16 +7,10 @@ import org.schema.common.util.linAlg.Vector3i;
 import org.schema.game.server.data.GameServerState;
 import org.schema.schine.graphicsengine.forms.font.FontLibrary;
 import warpspace.WarpMain;
-import warpspace.WarpManager;
+import warpspace.core.WarpManager;
 
 import java.util.Vector;
 
-/**
- * STARMADE MOD
- * CREATOR: Max1M
- * DATE: 26.10.2020
- * TIME: 20:55
- */
 
 /**
  * creates a text field HUD element and draws it (?)
